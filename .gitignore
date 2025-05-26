@@ -1,0 +1,50 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Odoo compiled files and logs
+*.log
+*.pot
+*.po~
+*.mo
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# Python environment files
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
+
+# Odoo specific files and directories to ignore
+*.db
+*.dump
+*.backup
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Node modules (if any front-end tools are used)
+node_modules/
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
