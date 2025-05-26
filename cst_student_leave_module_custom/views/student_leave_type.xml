@@ -1,0 +1,64 @@
+<odoo>
+    <data>
+
+        <!--Form View-->
+        <record id="view_student_leave_type_form" model="ir.ui.view">
+            <field name="name">student.leave.types..form</field>
+            <field name="model">cst.student.leave.type</field>
+            <field name="arch" type="xml">
+                <form string="Student Leave Types">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="leave_validation" string="Time Off Requests">
+                                <field name="student_leave_validation_type" string="Approval"
+                                    widget="radio" />
+                                <field name="faculty_validator"
+                                    invisible="student_leave_validation_type not in ['faculty']"
+                                    widget="many2one_avatar_user" />
+                            </group>
+
+                            <group name="configuration" id="configuration" string="Configuration">
+                                <field name="notify_ids" widget="many2many_tags"
+                                    placeholder="Nobody will be notified" />
+                                <field name="support_document"
+                                    string="Allow To Attach Supporting Document" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--List
+        View-->
+        <record id="view_list_student_leave_type" model="ir.ui.view">
+            <field name="name">student.leave.types.list</field>
+            <field name="model">cst.student.leave.type</field>
+            <field name="arch" type="xml">
+                <list string="Time Off Types">
+                    <field name="name" />
+                    <field name="student_leave_validation_type" />
+                </list>
+            </field>
+        </record>
+
+
+        <!--Actions-->
+        <record id="action_open_student_leave_type" model="ir.actions.act_window">
+            <field name="name">Student Leave Types</field>
+            <field name="res_model">cst.student.leave.type</field>
+            <field name="view_id" ref="view_list_student_leave_type" />
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Define Student Leave Types
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

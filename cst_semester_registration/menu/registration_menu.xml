@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+      <menuitem id="menu_cst_registration_root"
+            name="Semester Registration"
+            web_icon="cst_semester_registration,static/description/icon.png" />
+
+      <menuitem id="menu_cst_registration_submenu"
+            name="Registration"
+            parent="menu_cst_registration_root" />
+
+      <menuitem id="menu_cst_registration_register" name="Registration Register"
+            parent="menu_cst_registration_submenu"
+            action="action_cst_registration_register_view" />
+
+      <menuitem id="menu_cst_registration" name="Registration"
+            parent="menu_cst_registration_submenu"
+            action="action_cst_registration_view" />
+
+      <menuitem id="menu_cst_fee_structure" name="Fee Structure"
+            parent="menu_cst_registration_root"
+            action="action_cst_fee_structure" />
+
+</odoo>

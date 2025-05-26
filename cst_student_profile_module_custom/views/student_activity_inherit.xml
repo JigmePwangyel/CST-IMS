@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="student_activity_view_inherit" model="ir.ui.view">
+            <field name="name">student.activity.search.view.inheirt</field>
+            <field name="model">op.activity</field>
+            <field name="inherit_id" ref="openeducat_activity.view_op_activity_search" />
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <field name="student_number" />
+                </xpath>
+
+                <!--Removing
+                Exisiting Fields-->
+                <xpath expr="//field[@name='faculty_id']" position="replace">
+                </xpath>
+            </field>
+        </record>
+
+        <!--Activity
+        Form
+        View-->
+        <record id="activity_form_inherit" model="ir.ui.view">
+            <field name="name">activity.form.view.inherit</field>
+            <field name="model">op.activity</field>
+            <field name="inherit_id" ref="openeducat_activity.view_op_activity_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='student_id']" position="before">
+                    <field name="student_number" />
+                </xpath>
+                <xpath expr="//field[@name='faculty_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!--Activity
+        Tree View-->
+        <record id="activity_tree_inherit" model="ir.ui.view">
+            <field name="name">activity.tree.view.inherit</field>
+            <field name="model">op.activity</field>
+            <field name="inherit_id" ref="openeducat_activity.view_op_activity_tree" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='student_id']" position="before">
+                    <field name="student_number" string="Student Number" readonly="1" />
+                </xpath>
+
+                <xpath expr="//field[@name='faculty_id']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

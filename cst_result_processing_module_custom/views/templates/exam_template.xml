@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <template id="exam_portal_main_template" name="Custom Portal Page">
+            <t t-call="website.layout">
+                <div class="oe_structure mt-4">
+                    <div class="container">
+                        <!-- Breadcrumb -->
+                        <nav aria-label="breadcrumb" class="my-3">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/my">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    Examination
+                                </li>
+                            </ol>
+                        </nav>
+
+                        <h3 class="mb-4  text-secondary">Examination Portal</h3>
+
+                        <div id="portal_common_category"
+                            class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                            <!-- Portal cards will be injected here using
+                            t-call="portal.portal_docs_entry" -->
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

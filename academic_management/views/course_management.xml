@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form View for op.course (Inherited) -->
+    <record id="view_op_course_management_form_inherit" model="ir.ui.view">
+        <field name="name">op.course.management.form.inherit</field>
+        <field name="model">op.course</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_course_form" />
+        <field name="arch" type="xml">
+            <!-- Remove department field -->
+            <field name="evaluation_type" position="replace">
+                <field name="departments_id" />
+            </field>
+            <field name="department_id" position="after">
+                <field name="programme_leader_id" />
+            </field>
+
+            <!-- Remove field -->
+            <xpath expr="//field[@name='parent_id']" position="replace" />
+            <xpath expr="//field[@name='min_unit_load']" position="replace" />
+            <xpath expr="//field[@name='max_unit_load']" position="replace" />
+
+            <!-- Locate and reorder the fields -->
+            <field name="programme_leader_id" position="after">
+                <field name="max_unit_load" required="1" string="Total Credit" />
+            </field>
+
+
+            <!-- Allow PL to offer modules  -->
+            <xpath expr="//page[@name='subject']" position="replace">
+                <page string="Offer Module" name="offer_repeat_module">
+                    <field name="module_ids" nolabel="1">
+                        <list string="Offer Module" editable="bottom">
+                            <field name="batch_ids" />
+                            <field name="year" />
+                            <field name="term_id" />
+                            <field name="subject_ids" widget="many2many_tags" />
+                        </list>
+
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- List View for op.course -->
+    <record id="view_op_course_management_list_inherit" model="ir.ui.view">
+        <field name="name">op.course.management.list.inherit</field>
+        <field name="model">op.course</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_course_tree" />
+        <field name="arch" type="xml">
+
+            <field name="evaluation_type" position="replace">
+                <field name="departments_id" />
+            </field>
+            <field name="parent_id" position="replace" />
+            <field name="subject_ids" position="replace" />
+        </field>
+    </record>
+
+    <!-- Define the Kanban View for Courses -->
+    <record id="view_op_course_kanban" model="ir.ui.view">
+        <field name="name">op.course.kanban</field>
+        <field name="model">op.course</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name" />
+                <field name="code" />
+                <field name="departments_id" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_details">
+                            <strong>
+                                <field name="name" />
+                            </strong>
+                            <div>
+                                <field name="code" />
+                            </div>
+                            <div>
+                                <field name="departments_id" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Inherit and Update the Action -->
+    <record id="openeducat_core.act_open_op_course_view" model="ir.actions.act_window">
+        <field name="view_mode">kanban,list,form,pivot</field>  <!-- Add Kanban here -->
+        <field name="view_id" ref="academic_management.view_op_course_kanban" /> <!-- Specify the
+        Kanban view as default -->
+    </record>
+
+    <record model="ir.actions.act_window.view" id="act_open_op_course_view_kanban">
+        <field name="act_window_id" ref="openeducat_core.act_open_op_course_view" />
+        <field name="sequence" eval="1" />
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_op_course_kanban" />
+    </record>
+
+    <!--    Search view-->
+    <record id="view_op_course_search_inherit" model="ir.ui.view">
+        <field name="name">op.course.search.inherit</field>
+        <field name="model">op.course</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_course_search" />
+        <field name="arch" type="xml">
+            <!-- Add the new filter inside the existing <group> -->
+            <xpath expr="//group[filter[@name='group_by_partner_course']]" position="after">
+                <filter string="Department" name="group_by_department"
+                    context="{'group_by':'departments_id'}" />
+            </xpath>
+
+            <!-- Add the search panel after the <search> block -->
+            <xpath expr="//search" position="inside">
+                <searchpanel>
+                    <field name="departments_id" icon="fa-filter" groupby="group_by_department"
+                        limit="0" />
+                </searchpanel>
+            </xpath>
+        </field>
+    </record>
+</odoo>

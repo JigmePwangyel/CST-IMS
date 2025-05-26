@@ -1,0 +1,20 @@
+{
+    "name": "CST semester registration",
+    "version": "1.0",
+    "website": "https//www.theodooguys.com",
+    "author": "Kinzang Wangdi",
+    "description": "Register for the semester",
+    "category": "Portal",
+    "depends": ["base", "portal", "openeducat_core", "account", "website"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/cst_registration.xml",
+        "views/cst_fee_structure.xml",
+        "views/cst_registration_register_view.xml",
+        "views/templates/cst_registration_template.xml",
+        "views/templates/portal.xml",
+        "menu/registration_menu.xml",
+    ],
+    "installable": True,
+    "license": "LGPL-3",
+}

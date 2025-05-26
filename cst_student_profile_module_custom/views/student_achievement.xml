@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--Search View-->
+    <record id="student_achievement_search" model="ir.ui.view">
+        <field name="name">student.achievement.search.view</field>
+        <field name="model">cst.student.achievement</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="student_id" />
+                <field name="student_number" />
+
+                <!-- Predefined Filter: Show Active Students -->
+                <!-- <filter name="archive" string="Archived" domain="[('active', '=', False)]" /> -->
+            </search>
+        </field>
+    </record>
+
+    <!--Form
+    View-->
+    <record
+        id="view_form_student_achievement" model="ir.ui.view">
+        <field name="name">student.achievement.form</field>
+        <field name="model">cst.student.achievement</field>
+        <field name="arch" type="xml">
+            <form string="Student Achievement">
+                <sheet>
+                    <group>
+                        <group name="student_information" string="Student Information">
+                            <field name="student_number" />
+                            <field name="student_id"
+                                string="Student" widget="many2one_avatar_user" />
+                            <field name="achievement_name" placeholder="Enter achievement name..."
+                                string="Achievement Name" />
+                        </group>
+
+                        <group name="achievement_details" string="Achievement Details">
+                            <field name="achievement_description" widget="html" string="Description"
+                                placeholder="Provide more details about the achievement..." />
+                            <field name="achievement_date" string="Achievement Date" />
+                        </group>
+
+                        <group name="certificate_upload" string="Certificate">
+                            <field name="certificate_filename" invisible="1" />
+                            <field name="certificate_file" widget="work_permit_upload"
+                                string="Upload Certificate" filename="certificate_filename" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!--List
+    View-->
+    <record
+        id="view_list_student_achievement" model="ir.ui.view">
+        <field name="name">student.achievement.list</field>
+        <field name="model">cst.student.achievement</field>
+        <field name="arch" type="xml">
+            <list string="Student Achievements">
+                <field name="student_number" />
+                <field name="student_id" widget="many2one_avatar_user" string="Student" />
+                <field name="achievement_name" string="Achievement Name" />
+                <field name="achievement_date" string="Achievement Date" />
+            </list>
+        </field>
+    </record>
+
+    <!--Actions-->
+    <record
+        model="ir.actions.act_window" id="act_open_achievement_view">
+        <field name="name">Achievement Log</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cst.student.achievement</field>
+        <field name="view_id" ref="view_list_student_achievement" />
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <!--Adding
+    a Smart Button in Student View-->
+    <record id="achievement_smart_button"
+        model="ir.ui.view">
+        <field name="name">achievement.smart.buttons</field>
+        <field name="model">op.student</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_student_form" />
+        <field name="priority" eval="5" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="btn oe_stat_button" type="object"
+                    name="get_achievement_record"
+                    style="border-right: 1px solid;"
+                    icon="fa-trophy">
+                    <field string="Achievement" name="achievement_count" widget="statinfo" />
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

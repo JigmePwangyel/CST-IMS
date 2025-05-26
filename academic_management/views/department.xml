@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form View for op.department (Inherited) -->
+    <record id="view_op_department_form_inherit" model="ir.ui.view">
+        <field name="name">op.department.form.inherit</field>
+        <field name="model">op.department</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_department_form" />
+        <field name="arch" type="xml">
+
+            <!-- Replace the Parent Department with head_of_department -->
+            <xpath expr="//field[@name='parent_id']" position="replace">
+                <field name="head_of_department" required="1" />
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- List View for op.department -->
+    <record id="view_op_department_list_inherit" model="ir.ui.view">
+        <field name="name">op.department.list.inherit</field>
+        <field name="model">op.department</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_department_tree" />
+        <field name="arch" type="xml">
+            <!-- Replace the Parent Department with head_of_department -->
+            <xpath expr="//field[@name='parent_id']" position="replace">
+                <field name="head_of_department" required="1" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

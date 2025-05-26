@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!--Search View-->
+    <record id="student_discipline_search" model="ir.ui.view">
+        <field name="name">student.discipline.search.view</field>
+        <field name="model">cst.student.discipline</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="student_id" />
+                <field name="student_number" />
+                <field name="offense_id" />
+
+                <!-- Predefined Filter: Show Active Students -->
+                <!-- <filter name="archive" string="Archived" domain="[('active', '=', False)]" /> -->
+            </search>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_cst_student_discipline_list" model="ir.ui.view">
+        <field name="name">cst.student.discipline.list</field>
+        <field name="model">cst.student.discipline</field>
+        <field name="arch" type="xml">
+            <list string="Student Disciplinary Records">
+                <field name="student_number" />
+                <field name="student_id" widget="many2one_avatar_user" />
+                <field name="offense_id" />
+                <field name="incident_date" />
+                <field name="disciplinary_action" />
+                <field name="reported_by" widget="many2one_avatar_user" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_offense_type_list" model="ir.ui.view">
+        <field name="name">cst.student.offense.type.list</field>
+        <field name="model">cst.student.offense.type</field>
+        <field name="arch" type="xml">
+            <list string="Offense Type">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_cst_student_discipline_form" model="ir.ui.view">
+        <field name="name">cst.student.discipline.form</field>
+        <field name="model">cst.student.discipline</field>
+        <field name="arch" type="xml">
+            <form string="Student Disciplinary Record">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="student_number" readonly="1" />
+                            <field name="student_id" widget="many2one_avatar_user" />
+                            <field name="offense_id" />
+                            <field name="incident_date" />
+                        </group>
+                        <group>
+                            <field name="reported_by" widget="many2one_avatar_user" />
+                            <field name="disciplinary_action" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <field name="offense_description" />
+                                <field name="action_description" />
+                            </group>
+                        </page>
+                        <page string="Remarks">
+                            <group>
+                                <field name="remarks" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_offense_type_form" model="ir.ui.view">
+        <field name="name">cst.student.offense.type.form</field>
+        <field name="model">cst.student.offense.type</field>
+        <field name="arch" type="xml">
+            <form string="Offense Type">
+                <sheet>
+                    <field name="name" string="Offense Type" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open records -->
+    <record id="action_cst_student_discipline" model="ir.actions.act_window">
+        <field name="name">Student Disciplinary Records</field>
+        <field name="res_model">cst.student.discipline</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_cst_student_offense_type" model="ir.actions.act_window">
+        <field name="name">Student Disciplinary Offense Types</field>
+        <field name="res_model">cst.student.offense.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!--Adding
+    a Smart Button in Student View-->
+    <record id="discipline_smart_button" model="ir.ui.view">
+        <field name="name">discipline.smart.buttons</field>
+        <field name="model">op.student</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_student_form" />
+        <field name="priority" eval="5" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="btn oe_stat_button" type="object"
+                    name="get_discipline_record"
+                    style="border-right: 1px solid;"
+                    icon="fa-exclamation-triangle">
+                    <field string="Discipline" name="discipline_count" widget="statinfo" />
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

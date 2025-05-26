@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Override the existing menu item to remove group restriction -->
+        <menuitem name="SIS"
+            id="openeducat_core.menu_op_school_root"
+            web_icon="openeducat_core,static/description/sis.png"
+            sequence="1"
+            groups="base.group_user"
+        />
+
+        <menuitem id="openeducat_core.menu_op_school_main"
+            name="Students"
+            parent="openeducat_core.menu_op_school_root"
+            sequence="10"
+            action="openeducat_core.act_open_op_student_view"
+            groups="base.group_user"
+        />
+
+        <!--The
+        following menu will be in the config, so we update the group-->
+        <menuitem id="openeducat_activity.menu_op_activity_type_sub"
+            name="Activity Types"
+            parent="openeducat_core.menu_op_school_config_activity"
+            sequence="10"
+            action="openeducat_activity.act_open_op_activity_type_view"
+            groups="base.group_user" />
+
+        <!--New
+        Submenus
+        under General-->
+
+        <!--Adding
+        Groups to the general menu-->
+        <menuitem id="openeducat_core.menu_op_general_main"
+            name="General"
+            parent="openeducat_core.menu_op_school_root"
+            sequence="30"
+            groups="group_admin_user,group_staff_user,group_adm_user" />
+
+        <menuitem id="menu_item_student_status"
+            parent="openeducat_core.menu_op_general_main"
+            sequence="10"
+            name="Student Status"
+        />
+        <menuitem id="menu_student_extracurricular"
+            parent="openeducat_core.menu_op_general_main"
+            sequence="20"
+            name="Extracurricular"
+            action="openeducat_activity.act_open_op_activity_view"
+        />
+        <menuitem id="menu_student_leadership"
+            parent="openeducat_core.menu_op_general_main"
+            sequence="30"
+            name="Leadership"
+            action="act_open_leadership_view"
+        />
+        <menuitem id="menu_cst_student_discipline" name="Disciplinary Records"
+            parent="openeducat_core.menu_op_general_main"
+            action="action_cst_student_discipline"
+            sequence="40" />
+        <menuitem id="menu_cst_student_achievement" name="Achievement Records"
+            parent="openeducat_core.menu_op_general_main"
+            action="act_open_achievement_view"
+            sequence="50" />
+
+        <!--Configuration
+        Menu-->
+
+        <!--Overiding
+        the group of the original config menu-->
+
+        <menuitem id="openeducat_core.menu_op_school_config"
+            name="Configuration"
+            parent="openeducat_core.menu_op_school_root"
+            sequence="50"
+            groups="group_admin_user,group_adm_user" />
+
+        <menuitem id="menu_student_leadership_config"
+            name="Leadership Management"
+            parent="openeducat_core.menu_op_school_config"
+            sequence="40" />
+
+        <menuitem id="menu_student_leadership_sub"
+            name="Leadership Types"
+            parent="menu_student_leadership_config"
+            sequence="10"
+            action="cst_student_profile_module_custom.act_open_leadership_type_view" />
+
+        <menuitem id="menu_student_scholarship_config"
+            name="Scholarship Management"
+            parent="openeducat_core.menu_op_school_config"
+            sequence="50" />
+
+        <menuitem id="menu_student_scholarship_sub"
+            name="Scholarship Types"
+            parent="menu_student_scholarship_config"
+            sequence="10"
+            action="cst_student_profile_module_custom.act_open_scholarship_type_view" />
+
+        <menuitem id="menu_student_disciplinary_config"
+            name="Disciplinary Management"
+            parent="openeducat_core.menu_op_school_config"
+            sequence="60" />
+
+        <menuitem id="menu_student_discipline_sub"
+            name="Offense Types"
+            parent="menu_student_disciplinary_config"
+            sequence="10"
+            action="cst_student_profile_module_custom.action_cst_student_offense_type" />
+
+
+        <!--Modifying
+        the BATCH MANAGEMENT Module-->
+        <menuitem id="menu_sudent_batch_config"
+            name="Batch Management"
+            parent="openeducat_core.menu_op_school_config"
+            sequence="10"
+        />
+        <menuitem id="menu_student_batch"
+            name="Batches"
+            parent="menu_sudent_batch_config"
+            sequence="10"
+            action="openeducat_core.act_open_op_batch_view"
+        />
+
+        <!--Hiding
+        Settings Academic Year and Academic Term
+        
+        ***
+        NOTE: Need to hide Academic Year and Academic Term in a later date after the functionality
+        added to the Academic Mangement Module.
+        ***
+
+        -->
+        <record id="openeducat_core.menu_openeducat_config" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <!--Hiding
+        the student migration menu from general-->
+        <record id="openeducat_activity.menu_student_migrate" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <!--Hiding
+        the Faculty Menu-->
+        <record id="openeducat_core.menu_op_faculty_main" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <!--Hiding
+        Categories from Configuration-->
+        <record id="openeducat_core.menu_op_category_sub" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+
+        <!--Hiding
+        the Student and the Faculties Menu-->
+        <record id="openeducat_core.menu_op_faculty_root" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+        <record id="openeducat_core.menu_op_student_root" model="ir.ui.menu">
+            <field name="active">False</field>
+        </record>
+    </data>
+</odoo>

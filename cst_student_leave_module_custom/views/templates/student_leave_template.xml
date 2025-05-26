@@ -1,0 +1,452 @@
+<odoo>
+    <data>
+        <!--Template that fetches all leaves in table-->
+        <template id="portal_student_leave_template" name="My Student Leaves">
+            <t t-call="website.layout">
+                <div class="container">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="my-3">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/my">Home</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                My Leaves
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">My Leave Requests</h2>
+                        <div class="d-flex justify-content-between align-items-center"
+                            style="width: 30%;">
+                            <div class="">
+                                <form method="get"
+                                    class="form-inline d-flex align-items-center">
+                                    <label for="state" class="mr-2 mb-0">Status:</label>
+                                    <select id="state" name="state" class="form-control"
+                                        onchange="this.form.submit()">
+                                        <option value="">All</option>
+                                        <option value="confirm"
+                                            t-att-selected="'confirm' == request.params.get('state')">To
+                                            Approve</option>
+                                        <option value="validate"
+                                            t-att-selected="'validate' == request.params.get('state')">
+                                            Approved</option>
+                                        <option value="refuse"
+                                            t-att-selected="'refuse' == request.params.get('state')">
+                                            Refused</option>
+                                        <option value="cancel"
+                                            t-att-selected="'cancel' == request.params.get('state')">
+                                            Cancelled</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <div>
+                                <a href="/my/student/leave/apply" class="btn btn-primary">
+                                    Apply for New Leave
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="o_portal_my_doc_table table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Leave #</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Duration (days)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="leave_data">
+                                    <t t-foreach="leave_data" t-as="leave">
+                                        <tr>
+                                            <td>
+                                                <a
+                                                    t-attf-href="/my/student/leave/view/{{ leave.id }}">
+                                                    LEAVE/<t t-esc="leave.id" />
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <t t-esc="leave.date_from.strftime('%d/%m/%Y')" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="leave.date_to.strftime('%d/%m/%Y')" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="leave.number_of_days" /> days </td>
+
+                                            <td>
+                                                <span t-if="leave.state == 'validate'"
+                                                    class="badge rounded-pill text-bg-success">
+                                                    Approved
+                                                </span>
+                                                <span t-if="leave.state == 'refuse'"
+                                                    class="badge rounded-pill text-bg-danger">
+                                                    Refused
+                                                </span>
+                                                <span t-if="leave.state == 'confirm'"
+                                                    class="badge rounded-pill text-bg-warning">
+                                                    To Approve
+                                                </span>
+                                                <span t-if="leave.state == 'cancel'"
+                                                    class="badge rounded-pill text-bg-danger">
+                                                    Cancelled
+                                                </span>
+                                                <span
+                                                    t-if="leave.state not in ['validate', 'refuse', 'confirm', 'cancel']"
+                                                    class="badge rounded-pill text-bg-secondary">
+                                                    Unknown State
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td colspan="5" class="text-center">No leave requests found.</td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--Student
+        Leave Application Form-->
+        <template id="student_leave_application_form" name="Apply for Leave">
+            <t t-call="website.layout">
+                <div class="container">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/my">Home</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/my/student/leave">My Leaves</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                Apply Leave
+                            </li>
+                        </ol>
+                    </nav>
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card border-0">
+                                <div class="card-body p-5">
+                                    <h2 class="mb-4 text-center text-black fw-bold">
+                                        Apply for Leave
+                                    </h2>
+                                    <form method="post" action="/my/student/leave/apply/submit"
+                                        class="p-4 rounded shadow bg-white"
+                                        id="leaveApplicationForm" enctype="multipart/form-data">
+                                        <input type="hidden" name="csrf_token"
+                                            t-att-value="request.csrf_token()" />
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="student_number" class="form-label">Student
+                                                    Number</label>
+                                                <input type="text" class="form-control"
+                                                    id="student_number"
+                                                    t-att-value="student.student_number"
+                                                    readonly="readonly" />
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="student_name" class="form-label">Student
+                                                    Name</label>
+                                                <input type="text" class="form-control"
+                                                    id="student_name" t-att-value="student.name"
+                                                    readonly="readonly" />
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="programme" class="form-label">Programme</label>
+                                            <input type="text" class="form-control"
+                                                id="programme"
+                                                t-att-value="student.course_id.name"
+                                                readonly="readonly" />
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="leave_type" class="form-label">Leave
+                                                Type</label>
+                                            <select id="leave_type" name="leave_type"
+                                                class="form-select">
+                                                <option value="">-- Choose Leave Type --</option>
+                                                <t t-foreach="leave_types" t-as="lt">
+                                                    <option t-att-value="lt.id"
+                                                        t-att-data-support_document="lt.support_document">
+                                                        <t t-esc="lt.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                            <div id="leaveTypeError" class="text-danger"
+                                                style="display: none;">Please select a leave type.</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="start_date" class="form-label">Start
+                                                    Date</label>
+                                                <input type="date" class="form-control"
+                                                    id="start_date" name="start_date"
+                                                    required="required" />
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="end_date" class="form-label">End
+                                                    Date</label>
+                                                <input type="date" class="form-control"
+                                                    id="end_date" name="end_date"
+                                                    required="required" />
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="description" class="form-label">Description
+                                                / Reason for Leave</label>
+                                            <textarea id="description" name="description"
+                                                class="form-control" rows="4"
+                                                placeholder="Enter description..."
+                                                required="required"></textarea>
+                                        </div>
+
+                                        <div id="attachment_field" style="display:none;">
+                                            <div class="mb-3">
+                                                <label for="attachment" class="form-label">Attachment
+                                                    (If Required)</label>
+                                                <input type="file" class="form-control"
+                                                    id="attachment" name="attachment" />
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit"
+                                                class="btn btn-primary btn-lg px-5 mt-3">Submit
+                                                Application</button>
+                                        </div>
+                                        <input type="hidden" name="student_id"
+                                            t-att-value="student.id" />
+                                    </form>
+                                    <script>
+                                        const leaveTypeSelect =
+                                        document.getElementById("leave_type");
+                                        const attachmentField =
+                                        document.getElementById("attachment_field");
+                                        leaveTypeSelect.addEventListener("change", function () {
+                                        const selectedOption =
+                                        leaveTypeSelect.options[leaveTypeSelect.selectedIndex];
+                                        const requiresDocument =
+                                        selectedOption.getAttribute("data-support_document") ===
+                                        "True";
+                                        if (requiresDocument) {
+                                        attachmentField.style.display = "block";
+                                        } else {
+                                        attachmentField.style.display = "none";
+                                        }
+                                        });
+                                        document
+                                        .getElementById("leaveApplicationForm")
+                                        .addEventListener("submit", function (event) {
+                                        var leaveType = document.getElementById("leave_type").value;
+                                        var errorMessage =
+                                        document.getElementById("leaveTypeError");
+
+                                        if (leaveType === "") {
+                                        event.preventDefault();
+
+                                        errorMessage.style.display = "block";
+                                        document.getElementById("leave_type").classList.add("is-invalid");
+                                        } else {
+                                        errorMessage.style.display = "none";
+                                        document.getElementById("leave_type").classList.remove("is-invalid");
+                                        }
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--Success
+        Message-->
+        <template id="template_leave_success">
+            <t t-call="website.layout">
+                <div class="container my-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="text-center p-5 rounded">
+                                <h1 class="display-4 mb-4">
+                                    🎉 Leave Application Submitted!
+                                </h1>
+                                <p class="lead mb-4">
+                                    Your leave request has been successfully submitted for review.
+                                </p>
+                                <hr class="my-4" />
+                                <p>
+                                    You will be notified once your application is processed.
+                                </p>
+                                <a href="/my" class="btn btn-primary btn-lg mt-3">
+                                    Back to My Profile
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--Leave
+        Detail page-->
+        <template id="leave_detail_page" name="Leave Detail Page">
+            <t t-call="website.layout">
+                <div class="container my-5">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="my-3">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/my">Home</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <a href="/my/student/leave">My Leaves</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                Leave
+                            </li>
+                        </ol>
+                    </nav>
+                    <div class="text-center mb-5">
+                        <h1 class="display-4">Leave Application Details</h1>
+                        <p class="text-muted">View the complete information of your leave
+                            application</p>
+                    </div>
+                    <div class="card shadow-lg">
+                        <div class="card-body p-5">
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-3">
+                                    <h5 class="text-primary">Student Information</h5>
+                                    <p>
+                                        <strong>Name:</strong>
+                                        <t t-esc="leave.student_id.name" />
+                                    </p>
+                                    <p>
+                                        <strong>Student Number:</strong>
+                                        <t t-esc="leave.student_id.student_number" />
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <h5 class="text-primary">Leave Summary</h5>
+                                    <p>
+                                        <strong>Leave Type:</strong>
+                                        <t t-esc="leave.holiday_status_id.name" />
+                                    </p>
+                                    <p>
+                                        <strong>Status:</strong>
+                                        <span t-if="leave.state == 'validate'"
+                                            class="badge rounded-pill text-bg-success">
+                                            Approved
+                                        </span>
+                                        <span t-if="leave.state == 'refuse'"
+                                            class="badge rounded-pill text-bg-danger">
+                                            Refused
+                                        </span>
+                                        <span t-if="leave.state == 'confirm'"
+                                            class="badge rounded-pill text-bg-warning">
+                                            To Approve
+                                        </span>
+                                        <span t-if="leave.state == 'cancel'"
+                                            class="badge rounded-pill text-bg-danger">
+                                            Cancelled
+                                        </span>
+                                        <span
+                                            t-if="leave.state not in ['validate', 'refuse', 'confirm', 'cancel']"
+                                            class="badge rounded-pill text-bg-secondary">
+                                            Unknown State
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-3">
+                                    <h5 class="text-primary">Dates</h5>
+                                    <p>
+                                        <strong>From:</strong>
+                                        <t t-esc="leave.date_from" />
+                                    </p>
+                                    <p>
+                                        <strong>To:</strong>
+                                        <t t-esc="leave.date_to" />
+                                    </p>
+                                    <p><strong>Duration:</strong> <t t-esc="leave.number_of_days" />
+                                        day(s)</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <h5 class="text-primary">Approval</h5>
+                                    <p>
+                                        <strong>Leave Approver:</strong>
+                                        <t t-esc="leave.leave_approver_id.name" />
+                                    </p>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="mb-4">
+                                <h5 class="text-primary">Description</h5>
+                                <p>
+                                    <t t-esc="leave.name" />
+                                </p>
+                            </div>
+
+                            <t t-if="leave.supported_attachment_ids">
+                                <hr />
+                                <div class="mb-4">
+                                    <h5 class="text-primary">Attachments</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <t t-foreach="leave.supported_attachment_ids"
+                                            t-as="attachment">
+                                            <li
+                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span>
+                                                    <i class="bi bi-paperclip"></i>
+                                                    <t t-esc="attachment.name" />
+                                                </span>
+                                                <a
+                                                    t-attf-href="/web/content/#{attachment.id}?download=true"
+                                                    target="_blank"
+                                                    class="btn btn-sm btn-primary">
+                                                    Download
+                                                </a>
+                                            </li>
+                                        </t>
+                                    </ul>
+                                </div>
+                            </t>
+
+                            <div class="text-end">
+                                <a href="/my/student/leave" class="btn btn-primary">Back to
+                                    My Leaves</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_cst_registration_list" model="ir.ui.view">
+        <field name="name">cst.registration.list</field>
+        <field name="model">cst.registration</field>
+        <field name="arch" type="xml">
+            <list string="Student Registrations">
+                <field name="student_id" widget="many2one_avatar_user"/>
+                <field name="course_id"/>
+                <field name="term_id"/>
+                <field name="batch_id"/>
+                <field name="state" widget="badge" readonly="1"
+                       options="{'classes': {'registered': 'success', 'pending': 'warning', 'invoiced': 'info'}}"
+                       decoration-success="state == 'registered'"
+                       decoration-warning="state == 'pending'"
+                       decoration-info="state == 'invoiced'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_cst_registration_form" model="ir.ui.view">
+        <field name="name">cst.registration.form</field>
+        <field name="model">cst.registration</field>
+        <field name="arch" type="xml">
+            <form string="Student Registration">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="btn oe_stat_button" type="object"
+                                name="get_invoice"
+                                style="border-right: 1px solid;"
+                                icon="fa-money">
+                            <field string="Invoice" name="invoice_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group string="Student Information">
+                            <field name="student_id" widget="many2one_avatar_user"/>
+                            <field name="course_id" readonly="1"/>
+                            <field name="term_id" readonly="1"/>
+                        </group>
+                        <group string="Registration Details">
+                            <field name="register_id"/>
+                            <field name="batch_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Registered Subjects">
+                            <field name="subject_registration_ids" context="{'default_student_id': student_id}">
+                                <list editable="bottom">
+                                    <field name="subject_id"/>
+                                    <field name="registration_type" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_cst_registration_view" model="ir.actions.act_window">
+        <field name="name">Student Registrations</field>
+        <field name="res_model">cst.registration</field>
+        <field name="view_id" ref="view_cst_registration_list"/>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active_term': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage student semester registration requests.
+            </p>
+        </field>
+    </record>
+</odoo>

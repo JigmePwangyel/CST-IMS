@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+
+        <!--Search
+        View-->
+        <record id="view_subject_marks_search" model="ir.ui.view">
+            <field name="name">subject.marks.view</field>
+            <field name="model">marksheet.subject.rel</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="marksheet_id" />
+                    <field name="subject_id" />
+                    <field name="exam_type" />
+                    <field name="term_id" invisible="1" />
+                    <filter string="Active Academic Term" name="active_term"
+                        domain="[('term_id.is_active', '=', 'True')]" />
+
+                    <searchpanel>
+                        <!-- Filter by Student -->
+                        <field name="course_id" widget="selection" />
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <!--List
+        View-->
+        <record id="view_subject_marks_list" model="ir.ui.view">
+            <field name="name">subject.marks.list</field>
+            <field name="model">marksheet.subject.rel</field>
+            <field name="arch" type="xml">
+                <list>
+                    <!-- Fields to be shown in the list view -->
+                    <field name="marksheet_id" />
+                    <field name="subject_id" />
+                    <field name="exam_type" />
+                    <field name="term_id" />
+                    <field name="state" widget="badge" decoration-success="state in ('validated')" />
+                </list>
+            </field>
+        </record>
+
+        <!--Form
+        View-->
+        <record id="view_subject_marks_form" model="ir.ui.view">
+            <field name="name">subject.marks.form</field>
+            <field name="model">marksheet.subject.rel</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Reset" name="action_reset" type="object"
+                            invisible="state not in ('validated') or marksheet_status in ('declared')"
+                            groups="base.group_system,exam_cell_group"
+                        />
+                        <button string="Start Mark Upload" name="mark_upload" type="object"
+                            class="oe_highlight"
+                            invisible="state in ('marks_uploading','confirmed','validated')"
+                            groups="base.group_system,exam_cell_group"
+                        />
+                        <button string="Confirm" name="confirm_upload" type="object"
+                            class="oe_highlight"
+                            invisible="state not in ('marks_uploading')"
+                            groups="base.group_system,cst_result_processing_module_custom.exam_cell_group,cst_result_processing_module_custom.exam_tutor_group"
+                        />
+                        <button string="Validate" name="validate_upload" type="object"
+                            class="oe_highlight" invisible="state not in ('confirmed')"
+                            groups="base.group_system,exam_cell_group"
+                        />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Configure the Mark Upload"
+                                groups="base.group_system,exam_cell_group">
+                                <field name="marksheet_id" />
+                                <field name="subject_id" readonly="marksheet_id == False"
+                                    domain="subject_ids_domain" />
+                                <field name="tutor_id" widget="many2one_avatar_user" />
+                            </group>
+                            <group string="Module Details">
+                                <field name="subject_type" />
+                                <field name="credit" string="Total Credit" />
+                                <field name="ca_weightage" string="CA Weightage" />
+                                <field name="practical_weightage" string="Practical Weightage" />
+                                <field name="exam_weightage" string="Exam Weightage" />
+                            </group>
+                            <notebook>
+                                <page name="student_marks" string="Student Marks"
+                                >
+                                    <field name="exam_type" invisible="1" />
+                                    <!--For
+                                    Regular-->
+                                    <field name="is_editable_now" invisible="1" />
+
+                                    <field name="marks_id" invisible="exam_type in ('ra')">
+                                        <list editable="bottom"
+                                            readonly="state in ('validated') or not parent.is_editable_now">
+                                            <field name="student_id" widget="many2one_avatar_user"
+                                                readonly="state in ('validated') or not parent.is_editable_now" />
+                                            <field name="student_number"
+                                                readonly="state in ('validated') or not parent.is_editable_now" />
+                                            <field name="subject_id"
+                                                readonly="state in ('validated') or not parent.is_editable_now" />
+                                            <field name="subject_code" />
+                                            <field name="ca_marks"
+                                                readonly="state in ('validated') or not parent.is_editable_now" />
+                                            <field name="practical_marks"
+                                                readonly="state in ('validated') or subject_type in ('without_practical', 'without_exam') or not parent.is_editable_now" />
+                                            <field name="exam_marks"
+                                                readonly="state in ('validated') or subject_type in ('without_exam') or not parent.is_editable_now" />
+                                            <field name="final_total_marks" readonly="1" />
+                                            <field name="is_repeat_student" widget="boolean_toggle"
+                                                readonly="state in ('validated') or not parent.is_editable_now"
+                                            />
+                                            <field name="remarks" widget="badge"
+                                                decoration-success="remarks in ('pass','pass_ra')"
+                                                decoration-warning="remarks in ('ra')"
+                                                decoration-danger="remarks in ('fail','failed_ra')" />
+                                            <field name="result_id"
+                                                readonly="state in ('validated')" />
+                                        </list>
+                                    </field>
+
+                                    <!--For
+                                    RA-->
+                                    <field name="marks_id" invisible="exam_type in ('regular')">
+                                        <list editable="bottom"
+                                            readonly="state in ('validated') or not parent.is_editable_now">
+                                            <field name="student_id" widget="many2one_avatar_user"
+                                                readonly="state in ('validated') or not parent.is_editable_now" />
+                                            <field name="student_number"
+                                                readonly="state in ('validated') or not parent.is_editable_now" />
+                                            <field name="subject_id"
+                                                readonly="state in ('validated') or not parent.is_editable_now" />
+                                            <field name="ca_marks"
+                                                readonly="state in ('validated') or not parent.is_editable_now" />
+                                            <field name="practical_marks"
+                                                readonly="state in ('validated') or subject_type in ('without_practical', 'without_exam') or not parent.is_editable_now" />
+                                            <field name="exam_marks"
+                                                readonly="state in ('validated') or subject_type in ('without_exam') or not parent.is_editable_now" />
+                                            <field name="final_total_marks" readonly="1" />
+                                            <field name="remarks" widget="badge"
+                                                decoration-success="remarks in ('pass','pass_ra')"
+                                                decoration-warning="remarks in ('ra')"
+                                                decoration-danger="remarks in ('fail','failed_ra')" />
+                                            <field name="is_deferred" widget="boolean_toggle"
+                                                readonly="state in ('validated') or not parent.is_editable_now"
+                                            />
+                                            <field name="result_id"
+                                                readonly="state in ('validated')" />
+                                        </list>
+                                    </field>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                    <chatter />
+                </form>
+            </field>
+        </record>
+
+        <!--Action -->
+        <record id="action_open_upload_marks" model="ir.actions.act_window">
+            <field name="name">Upload Marks</field>
+            <field name="res_model">marksheet.subject.rel</field>
+            <field name="view_id" ref="view_subject_marks_list" />
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active_term': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Upload marks for exams that has been taken
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

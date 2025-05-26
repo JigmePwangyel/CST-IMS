@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Category
+        Definition-->
+        <record id="module_category_exam_module" model="ir.module.category">
+            <field name="name">Result Processing System</field>
+            <field name="description">User Category for Result Processing</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <!--Group
+        Definition-->
+        <record id="exam_student_group" model="res.groups">
+            <field name="name">Student User: View only their Result</field>
+            <field name="category_id" ref="module_category_exam_module" />
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+        </record>
+
+        <record id="exam_tutor_group" model="res.groups">
+            <field name="name">Tutor User: Upload Stduent Marks</field>
+            <field name="category_id" ref="module_category_exam_module" />
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+        </record>
+
+        <record id="exam_cell_group" model="res.groups">
+            <field name="name">Exam Cell User:Manage the System</field>
+            <field name="category_id" ref="module_category_exam_module" />
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+        </record>
+
+
+    </data>
+</odoo>

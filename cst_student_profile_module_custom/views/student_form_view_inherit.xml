@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+
+        <!--Form View
+        Customization-->
+        <record id="student_form_view_inherit" model="ir.ui.view">
+            <field name="name">student.form.view.inheirt</field>
+            <field name="model">op.student</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_student_form" />
+            <field name="arch" type="xml">
+
+                <!--Adding
+                the Student ID Field-->
+                <xpath expr="//div[@class='row']" position="after">
+                    <h3>
+                        <field name="student_number" string="Student ID Number"
+                            placeholder="Student Number" />
+                    </h3>
+                </xpath>
+
+                <!--Editing
+                the Notebook-->
+                <xpath expr="//form/sheet/notebook" position="replace">
+                    <notebook colspan="4">
+                        <page name="academic_information" string="Academic Information">
+                            <group>
+                                <group string="Admission Information">
+                                    <field name="admission_date" />
+                                    <field name="scholarship_id" string="Scholarship Type" />
+                                    <field name="scholarship_category" />
+                                    <field name="hostel_type" />
+                                </group>
+                                <group string="Academic Information">
+                                    <field name="college_email" readonly="1" />
+                                    <field name="course_id" string="Programme" />
+                                    <field name="year" />
+                                </group>
+                            </group>
+                        </page>
+                        <page name="personal_information_student" string="Private Information">
+                            <group>
+                                <group string="Private Contact">
+                                    <label for="current_address_dzongkhag" string="Current Address" />
+                                    <div name="o_address_format">
+                                        <div class="address_format">
+                                            <field name="current_address_gewog"
+                                                placeholder="Gewog"
+                                            />
+                                            <field name="current_address_dzongkhag"
+                                                placeholder="Dzongkhag"
+                                            />
+                                        </div>
+                                    </div>
+                                    <field name="private_mobile_number" />
+                                    <field name="private_email" />
+                                </group>
+
+                                <group string="Citizenship">
+                                    <field name="id_number" string="CID Number" />
+                                    <field name="blood_group" />
+                                    <field name="gender" />
+                                    <field name="dzongkhag" />
+                                    <field name="gewog" />
+                                    <field name="village" />
+                                    <field name="house_number" />
+                                    <field name="thram_number" />
+                                </group>
+
+                                <group string="Parents/Guardian Information">
+                                    <field name="guardian" />
+                                    <field name="guardian_contact" />
+                                    <field name="guardian_organization" />
+                                    <field name="relation_with_guardian" />
+                                </group>
+
+                                <group string="Past Academic Information">
+                                    <field name="index_no" />
+                                    <field name="class_xii_percentage" />
+                                    <field name="name_of_last_school" />
+                                </group>
+                            </group>
+                        </page>
+                        <page name="student_settings" string="Setting"
+                            groups="cst_student_profile_module_custom.group_admin_user">
+                            <group>
+                                <group string="Account Settings">
+                                    <field name="user_id" widget="many2one_avatar_user" />
+                                    <field name="batch_id" />
+                                    <field name="partner_id" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+
+</odoo>

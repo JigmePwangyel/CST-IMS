@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--    Menu for the academic management module-->
+    <menuitem
+        id="menu_op_academic_management_root"
+        name="Academic Management"
+        sequence="250"
+        web_icon="academic_management,static/description/icon.png" />
+
+
+    <menuitem
+        id="menu_op_config_course"
+        name="Programme Management"
+        parent="menu_op_academic_management_root"
+        sequence="10" />
+
+    <menuitem
+        id="menu_programmes"
+        name="Programmes"
+        parent="menu_op_config_course"
+        sequence="10"
+        action="openeducat_core.act_open_op_course_view"
+    />
+
+    <menuitem
+        id="menu_config_module"
+        name="Module Management"
+        parent="menu_op_academic_management_root"
+        sequence="20" />
+
+    <menuitem
+        id="menu_modules"
+        name="Module"
+        parent="menu_config_module"
+        sequence="10"
+        action="openeducat_core.act_open_op_subject_view"
+    />
+
+    <menuitem id="menu_offer_repeat_module"
+        name="Offer Repeat Module and Allocate Tutor"
+        parent="menu_config_module"
+        sequence="20"
+        action="action_open_offer_repeat_module"
+    />
+
+    <menuitem id="menu_op_config_academic_year_and_term"
+        name="Configuration"
+        parent="menu_op_academic_management_root"
+        sequence="30" />
+
+    <menuitem id="openeducat_core.menu_academic_year" name="Academic Year"
+        sequence="1"
+        parent="menu_op_config_academic_year_and_term"
+        action="openeducat_core.act_op_academic_year_view" />
+
+    <menuitem id="openeducat_core.menu_academic_term" name="Academic Term"
+        sequence="2"
+        parent="menu_op_config_academic_year_and_term"
+        action="openeducat_core.act_op_academic_term_view" />
+
+    <!--Hiding
+    the department menu-->
+    <record
+        id="openeducat_core.menu_op_department_sub" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+</odoo>

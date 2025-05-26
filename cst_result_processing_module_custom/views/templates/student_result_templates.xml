@@ -1,0 +1,112 @@
+<odoo>
+    <template id="student_marksheet_template" name="Student Result Page">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h2 class="mb-4">Your Results</h2>
+                <div class="row">
+                    <t t-if="marksheets">
+                        <t t-foreach="marksheets" t-as="marksheet">
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-esc="marksheet.name" />
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>Batch:</strong>
+                                            <t t-esc="marksheet.batch_id.name" />
+                                            <br />
+                                            <strong>Term:</strong>
+                                            <t t-esc="marksheet.term_id.name" />
+                                        </p>
+                                        <a t-att-href="'/student/results/view/%s' % marksheet.id"
+                                            class="btn btn-primary">
+                                            View Result
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                    <t t-if="not marksheets">
+                        <div class="col-12">
+                            <p>No declared marksheets available at the moment.</p>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="student_result_details_template" name="Student Result Details">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h2 class="mb-4">Result Details</h2>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4>Overall Result</h4>
+                        <t t-if="overall_result">
+                            <p><strong>Percentage:</strong> <t t-esc="overall_result.percentage" />%</p>
+                            <p>
+                                <strong>Result:</strong>
+                                <t t-esc="overall_result.result" />
+                            </p>
+                        </t>
+                        <t t-if="not overall_result">
+                            <p>No overall result found.</p>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Marks Breakdown</h4>
+                        <t t-if="marks">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>CA Marks</th>
+                                        <th>Practical Marks</th>
+                                        <th>Exam Marks</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="marks" t-as="mark">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="mark.marksheet_subject_id.subject_id.name" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="mark.ca_marks" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="mark.practical_marks" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="mark.exam_marks" />
+                                            </td>
+                                            <td>
+                                                <t t-esc="mark.remarks" />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="not marks">
+                            <p>No marks found for this marksheet.</p>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="/student/results/" class="btn btn-secondary">Back to All Marksheets</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

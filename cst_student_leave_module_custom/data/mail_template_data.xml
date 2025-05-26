@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Email template for Approver -->
+        <record id="inform_leave_email" model="mail.template">
+            <field name="name">Inform New Leave Email</field>
+            <field name="model_id" ref="cst_student_leave_module_custom.model_cst_student_leave" />
+            <field name="subject">New Student Leave Request</field>
+            <field name="email_from">{{ 'cst.ims.odoo@gmail.com' }}</field>
+            <field name="email_to">{{ object.leave_approver_id.work_email }}</field>
+            <field name="description">Sent email to approver</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0"
+                    style="padding-top: 16px; background-color: #FFFFFF; font-family:Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td valign="top" style="font-size: 13px;">
+                                            <div> Dear <t
+                                                    t-out="object.leave_approver_id.user_id.name"></t>
+                                                , <br /> A student named <t
+                                                    t-out="object.student_id.name"></t> from the <t
+                                                    t-out="object.course_id.name"></t> is requesting
+                                                leave for <t
+                                                    t-out="object.holiday_status_id.name"></t> . <br /><br />
+                                                The leave request details are as follows: <ul>
+                                                    <li>
+                                                        <b>Student Name:</b>
+                                                        <t t-out="object.student_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Programme:</b>
+                                                        <t t-out="object.course_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave Type:</b>
+                                                        <t t-out="object.holiday_status_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave Start Date:</b>
+                                                        <t t-out="object.date_from"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave End Date:</b>
+                                                        <t t-out="object.date_to"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Total Duration (Days):</b>
+                                                        <t t-out="object.number_of_days">
+                                                        </t>
+                                                    </li>
+                                                </ul>
+                                                Please review the leave request and approve or
+                                                reject it using the link below. <br /><br />
+
+                                                <a
+                                                    t-att-href="object.get_leave_approval_link()"
+                                                    style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                                                Go to Leave Request
+                                                </a>
+                                                <br />
+                                                <br />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- POWERED BY -->
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <tr>
+                                    <td style="text-align: center; font-size: 13px;"> Powered by <a
+                                            target="_blank"
+                                            href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth"
+                                            style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+            <field name="auto_delete" eval="True" />
+        </record>
+
+
+        <!-- Email template for Student -->
+        <record id="inform_student_leave_status_email" model="mail.template">
+            <field name="name">Inform Student of Leave Status</field>
+            <field name="model_id" ref="cst_student_leave_module_custom.model_cst_student_leave" />
+            <field name="subject">Leave Status</field>
+            <field name="email_from">{{ 'cst.ims.odoo@gmail.com' }}</field>
+            <field name="email_to">{{ object.student_id.college_email }}</field>
+            <field name="description">Sent email to student about leave status</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0"
+                    style="padding-top: 16px; background-color: #FFFFFF; font-family:Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td valign="top" style="font-size: 13px;">
+                                            <div> Dear <t t-out="object.student_id.name"></t>, <br />
+                                                Your leave request has been <b>
+                                                    <t
+                                                        t-if="object.state == 'validate'">Approved</t>
+    <t
+                                                        t-elif="object.state == 'refuse'">Refused</t>
+    <t
+                                                        t-else="object.state"></t> by <t
+                                                        t-out="object.leave_approver_id.name"></t>. </b>
+                                                 <br /><br />
+                                                Your leave request details were as follows: <ul>
+                                                    <li>
+                                                        <b>Student Name:</b>
+                                                        <t t-out="object.student_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Programme:</b>
+                                                        <t t-out="object.course_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave Type:</b>
+                                                        <t t-out="object.holiday_status_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave Start Date:</b>
+                                                        <t t-out="object.date_from"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave End Date:</b>
+                                                        <t t-out="object.date_to"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Total Duration (Days):</b>
+                                                        <t t-out="object.number_of_days"></t>
+                                                    </li>
+                                                </ul>
+                                                For more information, click on the button below: <br /><br />
+
+    <a
+                                                    t-att-href="object.get_leave_approval_link()"
+                                                    style="background-color: #875A7B; padding: 8px 16px; text-decoration: none; 
+              color: #fff; border-radius: 5px; font-size: 13px;">
+                                                Go to Leave Request
+                                                </a>
+
+    <br /><br />
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- POWERED BY -->
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <tr>
+                                    <td style="text-align: center; font-size: 13px;"> Powered by <a
+                                            target="_blank"
+                                            href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth"
+                                            style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+            <field name="auto_delete" eval="True" />
+        </record>
+
+
+        <!--Fix
+        multiple emails-->
+        <record id="inform_leave_to_notified_faculty" model="mail.template">
+            <field name="name">Notify Faculty</field>
+            <field name="model_id" ref="cst_student_leave_module_custom.model_cst_student_leave" />
+            <field name="subject">Student Leave Request Approved</field>
+            <field name="email_from">{{ 'cst.ims.odoo@gmail.com' }}</field>
+            <field name="email_to"></field>
+            <field name="description">Sent email to notified users</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0"
+                    style="padding-top: 16px; background-color: #FFFFFF; font-family:Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <tr>
+                                        <td valign="top" style="font-size: 13px;">
+                                            <div> Hi there <br /> This is to inform that a student
+                                                named <b>
+                                                    <t
+                                                        t-out="object.student_id.name"></t>
+                                                </b>
+                                                from the <b>
+                                                    <t
+                                                        t-out="object.course_id.name"></t>
+                                                </b>
+                                                has their leave <b>approved</b> by <b>
+                                                    <t t-out="object.leave_approver_id.name"></t>
+                                                </b>
+                                                    <br /><br />
+                                                The leave request details are as follows: <ul>
+                                                    <li>
+                                                        <b>Student Name:</b>
+                                                        <t t-out="object.student_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Programme:</b>
+                                                        <t t-out="object.course_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave Type:</b>
+                                                        <t t-out="object.holiday_status_id.name"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave Start Date:</b>
+                                                        <t t-out="object.date_from"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Leave End Date:</b>
+                                                        <t t-out="object.date_to"></t>
+                                                    </li>
+                                                    <li>
+                                                        <b>Total Duration (Days):</b>
+                                                        <t t-out="object.number_of_days"></t>
+                                                    </li>
+                                                </ul>
+                                                Please review the leave request by clicking on the
+                                                link below. <br /><br />
+
+            <a
+                                                    t-att-href="object.get_leave_approval_link()"
+                                                    style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                                                Go to Leave Request
+                                                </a>
+            <br />
+            <br />
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                                <tr>
+                                    <td style="text-align: center; font-size: 13px;"> Powered by <a
+                                            target="_blank"
+                                            href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth"
+                                            style="color: #875A7B;">Odoo</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+            <field name="auto_delete" eval="True" />
+        </record>
+    </data>
+</odoo>

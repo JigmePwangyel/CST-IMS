@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <!--Form View-->
+        <record id="view_scholarship_type_form" model="ir.ui.view">
+            <field name="name">student.scholarship.type.form</field>
+            <field name="model">cst.scholarship</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="category" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--List
+        View-->
+        <record id="view_scholarship_type_list" model="ir.ui.view">
+            <field name="name">student.scholarship.type.form</field>
+            <field name="model">cst.scholarship</field>
+            <field name="arch" type="xml">
+                <list string="List">
+                    <field name="name" />
+                    <field name="category" />
+                </list>
+            </field>
+        </record>
+
+
+        <!--Action
+        fo Scholarship Type-->
+        <record id="act_open_scholarship_type_view" model="ir.actions.act_window">
+            <field name="name">Scholarship Type</field>
+            <field name="res_model">cst.scholarship</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Scholarship Type
+                </p>
+            </field>
+            <field name="view_id" ref="view_scholarship_type_list" />
+        </record>
+    </data>
+</odoo>

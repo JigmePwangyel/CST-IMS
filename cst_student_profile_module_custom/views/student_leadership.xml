@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!--Search View-->
+        <record id="student_leaderhsip_search" model="ir.ui.view">
+            <field name="name">student.leadership.search.view</field>
+            <field name="model">cst.leadership</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="student_id" />
+                    <field name="student_number" />
+                    <field name="type_id" />
+
+                    <!-- Predefined Filter: Show Active Students -->
+                    <filter name="archive" string="Archived" domain="[('active', '=', False)]" />
+                </search>
+            </field>
+        </record>
+
+
+        <!--Student
+        Leadership List View-->
+        <record id="view_leadership_list" model="ir.ui.view">
+            <field name="name">student.leadership.list</field>
+            <field name="model">cst.leadership</field>
+            <field name="arch" type="xml">
+                <list string="Leadership Log">
+                    <field name="student_number" />
+                    <field name="student_id" widget="many2one_avatar_user" />
+                    <field name="type_id" />
+                    <field name="from_date" />
+                    <field name="to_date" />
+                </list>
+            </field>
+        </record>
+
+        <!--Student
+        Leadership Form View-->
+        <record id="view_leadership_form" model="ir.ui.view">
+            <field name="name">student.leadership.list</field>
+            <field name="model">cst.leadership</field>
+            <field name="arch" type="xml">
+                <form string="Leadership Log">
+                    <header />
+                    <sheet>
+                        <field name="active" invisible="1" />
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                            invisible="active == True" />
+                        <group>
+                            <group>
+                                <field name="student_number" />
+                                <field name="student_id" widget="many2one_avatar_user" />
+                                <field name="type_id" />
+                            </group>
+                            <group>
+                                <field name="from_date" />
+                                <field name="to_date" />
+                            </group>
+                        </group>
+                        <div>
+                            <label for="description" string="Description" class="mt32" />
+                            <field name="description" nolabel="1" />
+                        </div>
+                    </sheet>
+                    <chatter />
+                </form>
+            </field>
+        </record>
+
+        <!--Student
+        Leadership Type Form view-->
+
+        <record id="view_leadership_type_form" model="ir.ui.view">
+            <field name="name">student.leadership.type.form</field>
+            <field name="model">cst.leadership.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--Student
+        Leadership Type List View -->
+        <record id="view_leadership_type_list" model="ir.ui.view">
+            <field name="name">student.leadership.type.form</field>
+            <field name="model">cst.leadership.type</field>
+            <field name="arch" type="xml">
+                <list string="List">
+                    <field name="name" />
+                </list>
+            </field>
+        </record>
+
+
+        <!--Actions-->
+        <!--Action
+        for Leadership view-->
+        <record model="ir.actions.act_window" id="act_open_leadership_view">
+            <field name="name">Leadership Log</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cst.leadership</field>
+            <field name="binding_view_types">form</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="act_open_leadership_view_form">
+            <field name="act_window_id" ref="act_open_leadership_view" />
+            <field name="sequence" eval="20" />
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_leadership_form" />
+        </record>
+
+        <record model="ir.actions.act_window.view" id="act_open_leadership_view_list">
+            <field name="act_window_id" ref="act_open_leadership_view" />
+            <field name="sequence" eval="10" />
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_leadership_list" />
+        </record>
+
+        <!--Action
+        fo Leadership Type-->
+        <record id="act_open_leadership_type_view" model="ir.actions.act_window">
+            <field name="name">Leadership Type</field>
+            <field name="res_model">cst.leadership.type</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Leadership Type
+                </p>
+            </field>
+            <field name="view_id" ref="view_leadership_type_list" />
+        </record>
+        <!--Adding
+        a Smart Button in Student View-->
+        <record id="leadership_smart_button" model="ir.ui.view">
+            <field name="name">leadership.smart.buttons</field>
+            <field name="model">op.student</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_student_form" />
+            <field name="priority" eval="5" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="btn oe_stat_button" type="object"
+                        name="get_leadership"
+                        style="border-right: 1px solid;"
+                        icon="fa-street-view">
+                        <field string="Leadership" name="leadership_count" widget="statinfo" />
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

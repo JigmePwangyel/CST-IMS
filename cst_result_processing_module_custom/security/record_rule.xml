@@ -1,0 +1,14 @@
+<odoo>
+    <record id="tutor_mark_upload" model="ir.rule">
+        <field name="name">Allow Tutor To Upload Marks</field>
+        <field name="model_id" ref="model_marksheet_subject_rel" />
+        <field name="groups"
+            eval="[(4, ref('cst_result_processing_module_custom.exam_tutor_group'))]" />
+        <field name="domain_force">[('tutor_id.user_id.id', '=', user.id), ('state', '!=', 'draft')]</field> <!--
+        Restricts to own allocated marks -->
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+</odoo>

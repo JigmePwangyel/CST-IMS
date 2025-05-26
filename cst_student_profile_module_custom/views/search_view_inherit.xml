@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <!--Search View
+        Inherit-->
+        <record id="student_search_view_inherit" model="ir.ui.view">
+            <field name="name">student.search.view.inheirt</field>
+            <field name="model">op.student</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_student_search" />
+            <field name="arch" type="xml">
+                <!--Adding
+                Search Panel-->
+                <xpath expr="//search" position="inside">
+                    <searchpanel>
+                        <field name="course_id" select="single" />
+                    </searchpanel>
+                    <field name="student_number" />
+                    <filter name="archived" string="Archived" domain="[('active', '=', False)]" />
+                </xpath>
+
+                <!--Removing
+                The Existing Filters, Can be later modified to add more-->
+                <xpath expr="//group[@expand='0']" position="replace">
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

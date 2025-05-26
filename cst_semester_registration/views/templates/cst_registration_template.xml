@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Template for Access Denied -->
+    <template id="template_access_denied" name="Access Denied">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-exclamation-triangle-fill text-danger"
+                            style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-danger mb-3">
+                            Access Denied
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            You don't have permission to access the semester registration portal.
+                        </p>
+                        <a href="/" class="btn btn-secondary mt-3">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for Student Not Found -->
+    <template id="template_student_not_found" name="Student Not Found">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-person-x-fill text-warning" style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-warning mb-3">
+                            Student Record Not Found
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            We couldn't find your student record. Please contact administration.
+                        </p>
+                        <a href="/" class="btn btn-secondary mt-3">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for No Active Registration -->
+    <template id="template_no_active_registration" name="No Active Registration">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-calendar-x-fill text-info" style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-info mb-3">
+                            No Active Registration Period
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            There is currently no active semester registration period.
+                        </p>
+                        <a href="/" class="btn btn-secondary mt-3">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for Not Elgiible Registration -->
+    <template id="template_reg_not_eligible" name="Not Eligible for Registration">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card shadow-lg rounded-4 border-0">
+                            <div class="card-body p-5 text-center">
+                                <i class="bi bi-calendar-x text-danger mb-4"
+                                    style="font-size: 4rem;"></i>
+                                <h2 class="fw-bold text-danger mb-3">
+                                    Registration Unavailable
+                                </h2>
+                                <p class="text-muted fs-5">
+                                    Semester registration is currently closed. Please check back
+                                    later or contact your administration for more information.
+                                </p>
+                                <a href="/" class="btn btn-outline-primary btn-lg mt-4 px-5">
+                                    Return to Home
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template Thank You for registering XML -->
+    <template id="template_thank_you_registration" name="Thank You for Registration">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <div class="card shadow-lg p-4 rounded-4">
+                            <h1 class="display-4 text-success mb-3">
+                                🎉 Thank You!
+                            </h1>
+                            <p class="lead">
+                                Your semester registration has been successfully submitted.
+                            </p>
+                            <hr class="my-4" />
+                            <p>
+                                We wish you all the best for your academic journey ahead.
+                            </p>
+                            <a href="/" class="btn btn-primary btn-lg mt-3">
+                                Go Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for Already Registered -->
+    <template id="template_already_registered" name="Already Registered">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4">
+                        <h4 class="card-title fw-bold text-secondary mb-3">
+                            Already Registered
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            You have already completed your semester registration.
+                        </p>
+
+                        <div class="mb-3">
+                            <strong>Registration Date:</strong>
+                            <span class="badge bg-primary ms-2">
+                                <t t-esc="existing_registration.create_date.strftime('%d %B %Y')" />
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <strong>Status:</strong>
+                            <span
+                                t-attf-class="badge bg-{{ 'success' if existing_registration.state == 'registered' else 'warning' }}">
+                                <t t-esc="existing_registration.state" />
+                            </span>
+                        </div>
+
+                        <a href="/my/invoices" class="btn btn-primary mt-3">
+                            View Invoice
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for No Active Term -->
+    <template id="template_no_active_term" name="No Active Term">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-calendar-x-fill text-danger" style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-danger mb-3">
+                            No Active Academic Term
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            There is currently no active academic term for registration.
+                        </p>
+                        <a href="/" class="btn btn-secondary mt-3">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for No Repeatable Modules -->
+    <template id="template_no_repeatable_modules" name="No Repeatable Modules">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-book-x-fill text-warning" style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-warning mb-3">
+                            No Repeatable Modules Available
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            You have failed modules but none are currently offered for repeating.
+                        </p>
+                        <a href="/" class="btn btn-secondary mt-3">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for Registration Form -->
+    <template id="template_registration_form" name="Semester Registration Form">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card shadow-lg rounded-4 border-0">
+                            <div class="card-header bg-primary text-white rounded-top-4 py-3">
+                                <h2 class="mb-0 text-center fw-bold">Semester Registration Form</h2>
+                            </div>
+                            <div class="card-body p-5">
+                                <form method="post" action="/student/semester_registration/submit"
+                                    class="registration-form">
+                                    <input type="hidden" name="csrf_token"
+                                        t-att-value="request.csrf_token()" />
+
+                                    <!-- Student Information Section -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Name</label>
+                                                <input type="text" class="form-control"
+                                                    t-att-value="student.name" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Student Number</label>
+                                                <input type="text" class="form-control"
+                                                    t-att-value="student.student_number"
+                                                    readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Programme</label>
+                                                <input type="text" class="form-control"
+                                                    t-att-value="student.course_id.name"
+                                                    readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Regular Subjects Section -->
+                                    <t t-if="has_regular_subject">
+                                        <div class="mb-4">
+                                            <h5 class="fw-bold text-primary mb-3">Regular Subjects</h5>
+                                            <div class="alert alert-info">
+                                                <i class="fa fa-info-circle me-2"></i> These are
+                                                your standard modules for this semester </div>
+                                            <div class="border rounded p-3 bg-light">
+                                                <div class="list-group">
+                                                    <t t-foreach="regular_subjects" t-as="subject">
+                                                        <div class="list-group-item">
+                                                            <div class="form-check">
+                                                                <!-- Hidden input field for
+                                                                submission -->
+                                                                <input type="hidden"
+                                                                    name="regular_subject_ids[]"
+                                                                    t-att-value="subject.id" />
+
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    t-att-value="subject.id"
+                                                                    t-att-id="'reg_subj_%s' % subject.id"
+                                                                    checked="checked"
+                                                                    disabled="disabled"
+                                                                />
+                                                                <label
+                                                                    class="form-check-label w-100"
+                                                                    t-att-for="'reg_subj_%s' % subject.id">
+                                                                    <div
+                                                                        class="d-flex justify-content-between">
+                                                                        <span>
+                                                                            <t t-esc="subject.name" />
+                                                                            <small
+                                                                                class="text-muted d-block">
+                                                                                Code: <t
+                                                                                    t-esc="subject.code" />
+                                                                            </small>
+                                                                        </span>
+                                                                        <span
+                                                                            class="badge bg-primary align-self-center">
+                                                                            Regular
+                                                                        </span>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="has_regular_subject"
+                                            t-att-value="has_regular_subject" />
+                                    </t>
+
+                                    <!-- Backpaper Subjects Section -->
+                                    <!--NOTE
+                                    Has repeat means backpaper. Is repeat means actual repeat
+                                    students-->
+                                    <t t-if="has_repeat_subject">
+                                        <div class="mb-4">
+                                            <h5 class="fw-bold text-primary mb-3">Backpaper Subjects</h5>
+                                            <div class="alert alert-warning">
+                                                <i class="fa fa-exclamation-triangle me-2"></i>
+                                                Please select subjects you want to take as backpaper </div>
+                                            <div class="border rounded p-3 bg-light">
+                                                <div class="list-group">
+                                                    <t t-foreach="repeatable_subjects"
+                                                        t-as="subject">
+                                                        <div class="list-group-item">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    name="repeat_subject_ids[]"
+                                                                    t-att-value="subject.id"
+                                                                    t-att-id="'rep_subj_%s' % subject.id" />
+                                                                <label
+                                                                    class="form-check-label w-100"
+                                                                    t-att-for="'reg_subj_%s' % subject.id">
+                                                                    <div
+                                                                        class="d-flex justify-content-between">
+                                                                        <span>
+                                                                            <t t-esc="subject.name" />
+                                                                            <small
+                                                                                class="text-muted d-block">
+                                                                                Code: <t
+                                                                                    t-esc="subject.code" />
+                                                                            </small>
+                                                                        </span>
+                                                                        <span
+                                                                            class="badge bg-warning align-self-center">
+                                                                            Backpaper
+                                                                        </span>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="has_repeat_subject"
+                                            t-att-value="has_repeat_subject" />
+                                    </t>
+
+                                    <!-- Repeat Subjects Section-->
+                                    <t t-if="is_repeat">
+                                        <div class="mb-4">
+                                            <h5 class="fw-bold text-primary mb-3">Repeat Subjects</h5>
+                                            <div class="alert alert-info">
+                                                <i class="fa fa-info-circle me-2"></i> These are
+                                                your standard modules you need to repeat this
+                                                semester </div>
+                                            <div class="border rounded p-3 bg-light">
+                                                <div class="list-group">
+                                                    <t t-foreach="repeat_modules" t-as="subject">
+                                                        <div class="list-group-item">
+                                                            <div class="form-check">
+                                                                <!-- Hidden input field for
+                                                                submission -->
+                                                                <input type="hidden"
+                                                                    name="is_repeat_subject_ids[]"
+                                                                    t-att-value="subject.id" />
+
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    t-att-value="subject.id"
+                                                                    t-att-id="'reg_subj_%s' % subject.id"
+                                                                    checked="checked"
+                                                                    disabled="disabled"
+                                                                />
+                                                                <label
+                                                                    class="form-check-label w-100"
+                                                                    t-att-for="'reg_subj_%s' % subject.id">
+                                                                    <div
+                                                                        class="d-flex justify-content-between">
+                                                                        <span>
+                                                                            <t t-esc="subject.name" />
+                                                                            <small
+                                                                                class="text-muted d-block">
+                                                                                Code: <t
+                                                                                    t-esc="subject.code" />
+                                                                            </small>
+                                                                        </span>
+                                                                        <span
+                                                                            class="badge bg-danger align-self-center">
+                                                                            Repeat
+                                                                        </span>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="is_repeat"
+                                            t-att-value="is_repeat" />
+                                    </t>
+
+                                    <!-- No Subjects Warning -->
+                                    <t t-if="not regular_subjects and not has_repeat_subject">
+                                        <div class="alert alert-danger">
+                                            <i class="fa fa-exclamation-circle me-2"></i> No
+                                            subjects available for registration. Please contact
+                                            administration. </div>
+                                    </t>
+
+                                    <!-- Fee Information -->
+                                    <div class="mb-4">
+                                        <h5 class="fw-bold text-primary mb-3">Fee Information</h5>
+                                        <div class="border rounded p-3 bg-light">
+                                            <t t-if="student.scholarship_id">
+                                                <p class="mb-2">
+                                                    <strong>Scholarship:</strong>
+                                                    <span class="badge bg-info ms-2">
+                                                        <t t-esc="student.scholarship_id.category" />
+                                                    </span>
+                                                </p>
+                                            </t>
+                                            <p class="mb-0 text-muted">
+                                                <i class="fa fa-info-circle me-1"></i> Final fees
+                                                will be calculated based on your selections. </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submission -->
+                                    <div class="text-center mt-4">
+                                        <button type="submit"
+                                            class="btn btn-primary btn-lg px-5 py-3">
+                                            <i class="fa fa-paper-plane me-2"></i> Submit
+                                            Registration </button>
+                                    </div>
+
+                                    <!--Submit
+                                    Common Details here-->
+                                    <input type="hidden" name="student_id"
+                                        t-att-value="student.id" />
+                                    <input type="hidden" name="register_id"
+                                        t-att-value="register.id" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for No Subjects Selected -->
+    <template id="template_no_subjects_selected" name="No Subjects Selected">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-exclamation-circle-fill text-warning"
+                            style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-warning mb-3">
+                            No Subjects Selected
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            You must select at least one subject to register for the semester.
+                        </p>
+                        <a t-att-href="'/student/semester_registration'"
+                            class="btn btn-primary mt-3">
+                            Back to Registration Form
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for Too Many Repeats -->
+    <template id="template_too_many_repeats" name="Too Many Repeats">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-exclamation-triangle-fill text-danger"
+                            style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-danger mb-3">
+                            Too Many Repeat Subjects
+                        </h4>
+                        <p class="mb-3 text-muted"> You can only register for a maximum of <t
+                                t-esc="max_repeats" /> repeat subjects. </p>
+                        <a t-att-href="'/student/semester_registration'"
+                            class="btn btn-primary mt-3">
+                            Back to Registration Form
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for Submission Error -->
+    <template id="template_submission_error" name="Submission Error">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-x-circle-fill text-danger" style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-danger mb-3">
+                            Registration Error
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            An error occurred while processing your registration:
+                        </p>
+                        <div class="alert alert-danger">
+                            <t t-esc="error" />
+                        </div>
+                        <a t-att-href="'/student/semester_registration'"
+                            class="btn btn-primary mt-3">
+                            Try Again
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!--Template
+    for Invalid number of subjects -->
+    <template id="template_invalid_number_of_subjects" name="Submission Error">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-x-circle-fill text-danger" style="font-size: 3rem;"></i>
+                        <h4 class="card-title fw-bold text-danger mb-3">
+                            Invalid Number of Modules
+                        </h4>
+                        <p class="mb-3 text-muted">
+                            You can only register for 7 modules
+                        </p>
+                        <div class="alert alert-danger">
+                            <t t-esc="error" />
+                        </div>
+                        <a t-att-href="'/student/semester_registration'"
+                            class="btn btn-primary mt-3">
+                            Try Again
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for View My Registration -->
+    <template id="view_my_registration" name="My Semester Registration">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-header bg-primary text-white rounded-top-4 py-3">
+                        <h2 class="mb-0 text-center fw-bold">My Semester Registration</h2>
+                    </div>
+                    <div class="card-body p-4">
+
+                        <!-- Registration Information -->
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Registration Date</label>
+                                    <div class="form-control-plaintext">
+                                        <t t-esc="registration.create_date.strftime('%d %B %Y')" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Status</label>
+                                    <div>
+                                        <span
+                                            t-attf-class="badge bg-{{ 'success' if registration.state == 'registered' else 'warning' }}">
+                                            <t t-esc="registration.state" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Invoice</label>
+                                    <div>
+                                        <a t-if="registration.invoice_id"
+                                            t-att-href="'/my/invoices/' + str(registration.invoice_id.id)"
+                                            class="badge bg-info text-decoration-none">
+                                            <t t-esc="registration.invoice_id.name" />
+                                        </a>
+                                        <span t-else="" class="badge bg-secondary">No Invoice</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Subjects Information -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold text-primary mb-3">Registered Subjects</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">Regular Subjects</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <t
+                                                t-if="registration.subject_registration_ids.filtered(lambda r: r.registration_type == 'regular')">
+                                                <ul class="list-group list-group-flush">
+                                                    <t
+                                                        t-foreach="registration.subject_registration_ids.filtered(lambda r: r.registration_type == 'regular')"
+                                                        t-as="subj">
+                                                        <li
+                                                            class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <span>
+                                                                <t t-esc="subj.subject_id.name" />
+                                                                <small class="text-muted ms-2">(<t
+                                                                        t-esc="subj.subject_id.code" />
+                                                                    ) </small>
+                                                            </span>
+                                                            <span class="badge bg-primary">Regular</span>
+                                                        </li>
+                                                    </t>
+                                                </ul>
+                                            </t>
+                                            <t t-else="">
+                                                <p class="text-muted mb-0">No regular subjects
+                                                    registered.</p>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">Repeat Subjects</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <t
+                                                t-if="registration.subject_registration_ids.filtered(lambda r: r.registration_type == 'repeat')">
+                                                <ul class="list-group list-group-flush">
+                                                    <t
+                                                        t-foreach="registration.subject_registration_ids.filtered(lambda r: r.registration_type == 'repeat')"
+                                                        t-as="subj">
+                                                        <li
+                                                            class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <span>
+                                                                <t t-esc="subj.subject_id.name" />
+                                                                <small class="text-muted ms-2">(<t
+                                                                        t-esc="subj.subject_id.code" />
+                                                                    ) </small>
+                                                            </span>
+                                                            <span class="badge bg-danger">Repeat</span>
+                                                        </li>
+                                                    </t>
+                                                </ul>
+                                            </t>
+                                            <t t-else="">
+                                                <p class="text-muted mb-0">No repeat subjects
+                                                    registered.</p>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/" class="btn btn-outline-secondary">
+                                Back to Home
+                            </a>
+                            <a t-if="registration.invoice_id"
+                                t-att-href="'/my/invoices/' + str(registration.invoice_id.id)"
+                                class="btn btn-primary">
+                                View Invoice
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <!-- Inherited Tree View -->
+        <record id="inherit_op_academic_term_tree_custom" model="ir.ui.view">
+            <field name="name">op.academic.term.list.inherit</field>
+            <field name="model">op.academic.term</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_academic_term_tree" />
+            <field name="arch" type="xml">
+
+                <!-- Replace the 'parent_term' field with 'is_active' in the tree view -->
+                <xpath expr="//field[@name='parent_term']" position="replace">
+                    <field name="is_active" width="25%" />
+                </xpath>
+
+                <!-- Ensure other columns have 25% width -->
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="width">25%</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='term_start_date']" position="attributes">
+                    <attribute name="width">25%</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='term_end_date']" position="attributes">
+                    <attribute name="width">25%</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherited Form View -->
+        <record id="inherit_op_academic_term_form_custom" model="ir.ui.view">
+            <field name="name">op.academic.term.form.inherit</field>
+            <field name="model">op.academic.term</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_academic_term_form" />
+            <field name="arch" type="xml">
+
+                <!-- Replace the 'parent_term' field with 'is_active' in the form view -->
+                <xpath expr="//field[@name='parent_term']" position="replace">
+                    <field name="is_active" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

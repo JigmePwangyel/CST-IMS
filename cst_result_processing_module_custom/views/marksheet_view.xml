@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Search View-->
+        <record id="view_search_marksheet" model="ir.ui.view">
+            <field name="name">marksheet.search</field>
+            <field name="model">cst.exam.marksheet</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+                    <field name="exam_type" />
+                    <field name="batch_id" />
+                    <field name="state" />
+                    <field name="term_id" invisible="1" />
+                    <!-- Search Panel for Filtering -->
+                    <filter string="Active Academic Term" name="active_term"
+                        domain="[('term_id.is_active', '=', 'True')]" />
+                    <searchpanel>
+                        <!-- Filter by Student -->
+                        <field name="course_id" widget="selection" />
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <!--Form
+        View-->
+        <record id="view_marksheet_declaration_form" model="ir.ui.view">
+            <field name="name">marksheet.declaration.form</field>
+            <field name="model">cst.exam.marksheet</field>
+            <field name="arch" type="xml">
+                <form string="Marksheet Declaration">
+                    <!-- Header section with the name field and state -->
+                    <header>
+                        <button string="Confirm" name="action_confirm" type="object"
+                            class="oe_highlight"
+                            invisible="state not in ('draft')"
+                        />
+                        <button
+                            string="Declare"
+                            name="action_declare"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state in ('draft','declared')"
+                        />
+                        <button
+                            string="Reset"
+                            name="action_reset"
+                            type="object"
+                            invisible="state not in ('declared', 'confirmed')"
+                        />
+
+                        <field name="state" widget="statusbar"
+                            statusbar_visible="draft,confirmed,declared" />
+                    </header>
+
+                    <sheet>
+                        <!-- Main form content -->
+                        <div class="oe_button_box" name="button_box">
+                            <button class="btn oe_stat_button" type="object"
+                                name="get_modules"
+                                style="border-right: 1px solid;"
+                                icon="fa-check-square-o">
+                                <field string="Modules" name="module_count"
+                                    widget="statinfo" />
+                            </button>
+
+                            <button class="btn oe_stat_button" type="object"
+                                name="get_results"
+                                style="border-right: 1px solid;"
+                                icon="fa-fax">
+                                <field string="Results" name="result_count"
+                                    widget="statinfo" />
+                            </button>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="name" readonly="state in ('confirmed','declared')" />
+                                <field name="exam_type" readonly="state in ('confirmed','declared')" />
+                                <label for="start_date" string="Date" />
+                                <div class="o_row">
+                                    <field name="start_date" widget="daterange"
+                                        options="{'end_date_field': 'end_date'}" class="oe_inline"
+                                        readonly="state in ('confirmed','declared')" />
+                                </div>
+                            </group>
+                            <group>
+                                <field name="course_id" readonly="1" />
+                                <field name="batch_id" readonly="state in ('confirmed','declared')" />
+                                <field name="term_id" readonly="state in ('confirmed','declared')" />
+                            </group>
+                            <group>
+                                <field name="date_of_declaration"
+                                    readonly="1" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <chatter />
+                </form>
+            </field>
+        </record>
+
+        <!--List
+        View-->
+        <record id="view_list_marksheet_declaration" model="ir.ui.view">
+            <field name="name">marksheet.declaration.list</field>
+            <field name="model">cst.exam.marksheet</field>
+            <field name="arch" type="xml">
+                <list string="Exam Marksheet Declaration">
+                    <field name="name" />
+                    <field name="exam_type" />
+                    <field name="batch_id" />
+                    <field name="term_id" />
+                    <field name="state" widget="badge"
+                        decoration-info="state in 'confirmed'"
+                        decoration-success="state == 'declared'"
+                        decoration-warning="state == 'draft'" />
+                </list>
+            </field>
+        </record>
+
+        <!--Action
+        Open
+        Marksheet Declaration-->
+        <record id="action_open_marksheet_declaration_list" model="ir.actions.act_window">
+            <field name="name">Exam Marksheet Declaration</field>
+            <field name="res_model">cst.exam.marksheet</field>
+            <field name="view_id" ref="view_list_marksheet_declaration" />
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active_term': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Declare Marksheet for Various Examination
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

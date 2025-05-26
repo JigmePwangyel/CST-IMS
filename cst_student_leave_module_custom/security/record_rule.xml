@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="rule_student_user_view_only_own_leave" model="ir.rule">
+            <field name="name">Student: View Only Own Leave</field>
+            <field name="model_id" ref="cst_student_leave_module_custom.model_cst_student_leave" />
+            <field name="groups"
+                eval="[(4, ref('cst_student_leave_module_custom.student_leave_student_group'))]" />
+            <field name="domain_force">[('student_id.user_id', '=', user.id)]</field>
+        </record>
+
+        <!--Record
+        Rule for email-->
+        <record id="rule_mail_template_student_group" model="ir.rule">
+            <field name="name">Allow Email Template Access for Student Group</field>
+            <field name="model_id" ref="mail.model_mail_template" />
+            <field name="groups"
+                eval="[(4, ref('cst_student_leave_module_custom.student_leave_student_group'))]" />
+            <field name="domain_force">
+                [('body_html', 'not ilike', '${object.sensitive_data}')]
+            </field>
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="True" />
+            <field name="perm_create" eval="True" />
+            <field name="perm_unlink" eval="False" />  <!-- Set to True if delete access is needed -->
+        </record>
+
+        <record id="rule_mail_template_student_group" model="ir.rule">
+            <field name="name">Allow Email Template Access for Tutor Group</field>
+            <field name="model_id" ref="mail.model_mail_template" />
+            <field name="groups"
+                eval="[(4, ref('cst_student_leave_module_custom.student_leave_approver_group'))]" />
+            <field name="domain_force">
+                [('body_html', 'not ilike', '${object.sensitive_data}')]
+            </field>
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="True" />
+            <field name="perm_create" eval="True" />
+            <field name="perm_unlink" eval="False" />  <!-- Set to True if delete access is needed -->
+        </record>
+    </data>
+</odoo>

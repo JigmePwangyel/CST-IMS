@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <menuitem
+            name="Student Time Off"
+            id="menu_student_leave_root"
+            sequence="1"
+            groups="student_leave_student_group"
+            web_icon="cst_student_leave_module_custom,static/description/icon.png"
+        />
+        <menuitem
+            name="My Time Off"
+            id="menu_student_leave_student"
+            parent="menu_student_leave_root"
+            sequence="1"
+            action="cst_student_leave_module_custom.action_open_student_leave_individual"
+            groups="student_leave_student_group"
+        />
+
+        <menuitem
+            name="Management"
+            id="menu_student_leave_management"
+            parent="menu_student_leave_root"
+            sequence="2"
+            groups="student_leave_approver_group,student_leave_admin_group"
+        />
+
+        <menuitem
+            name="Time Off"
+            id="menu_student_leave_time_off"
+            parent="menu_student_leave_management"
+            sequence="1"
+            action="cst_student_leave_module_custom.action_open_student_leave_individual"
+            groups="student_leave_approver_group,student_leave_admin_group"
+        />
+
+        <menuitem
+            name="Configuration"
+            id="menu_student_leave_configuration"
+            parent="menu_student_leave_root"
+            sequence="3"
+            groups="student_leave_approver_group,student_leave_admin_group"
+        />
+
+        <menuitem
+            name="Time Off Types"
+            id="menu_student_leave_types"
+            parent="menu_student_leave_configuration"
+            sequence="1"
+            groups="student_leave_approver_group,student_leave_admin_group"
+            action="cst_student_leave_module_custom.action_open_student_leave_type"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,112 @@
+<odoo>
+    <data>
+        <!--List
+        View-->
+        <record id="view_list_re_eval_config" model="ir.ui.view">
+            <field name="name">re.eval.register.application.list</field>
+            <field name="model">cst.exam.re.eval.registar</field>
+            <field name="arch" type="xml">
+                <list string="Re-Check and Re-Evaluation Configuration">
+                    <field name="name" />
+                    <field name="start_date" />
+                    <field name="end_date" />
+                    <field name="term_id" widget="badge" />
+                    <field name="state" widget="badge"
+                        decoration-info="state in 'confirmed'"
+                        decoration-primary="state == 'application'"
+                        decoration-warning="state == 'draft'"
+                        decoration-success="state == 'done'" />
+                    <field name="is_published" widget="boolean_toggle" readonly="1" />
+                </list>
+            </field>
+        </record>
+
+        <!--Form
+        View-->
+        <record id="view_form_re_eval_config" model="ir.ui.view">
+            <field name="name">re.eval.register.form</field>
+            <field name="model">cst.exam.re.eval.registar</field>
+            <field name="arch" type="xml">
+                <form string="Re-check and Re-eval Register Form">
+                    <header>
+                        <button string="Confirm" name="action_confirm" type="object"
+                            class="oe_highlight"
+                            invisible="state not in ('draft')"
+                        />
+                        <button
+                            string="Gather Application"
+                            name="action_gather_application"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state in ('draft','done','application')"
+                        />
+                        <button
+                            string="Done"
+                            name="action_done"
+                            type="object"
+                            invisible="state in ('draft','done','confirmed')"
+                        />
+                        <button
+                            string="Reset"
+                            name="action_reset"
+                            type="object"
+                            invisible="state not in ('done','confirmed','application')"
+                        />
+                        <field name="state" widget="statusbar"
+                            statusbar_visible="draft,confirmed,application,done" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box"
+                            name="button_box">
+                            <button class="btn oe_stat_button" type="object"
+                                name="get_request"
+                                style="border-right: 1px solid;"
+                                icon="fa-paper-plane">
+                                <field string="Applications" name="application_count"
+                                    widget="statinfo" />
+                            </button>
+                            <button class="oe_stat_button"
+                                name="website_publish_button" type="object"
+                                icon="fa-globe">
+                                <field name="is_published" widget="website_publish_button" />
+                            </button>
+                        </div>
+
+
+                        <group>
+                            <group string="Configure Register">
+                                <field name="name" readonly="state not in ('draft')" />
+                                <field name="type" readonly="state not in ('draft')" />
+                                <field name="term_id" readonly="state not in ('draft')" />
+                                <label for="start_date" string="Date"
+                                    readonly="state not in ('draft')" />
+                                <div class="o_row">
+                                    <field name="start_date" widget="daterange"
+                                        options="{'end_date_field': 'end_date'}" class="oe_inline"
+                                        readonly="state in ('confirmed','done')" />
+                                </div>
+                                <field name="duration_days" readonly="1" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--Action
+        Open
+        RA Register-->
+        <record id="action_open_re_eval_config" model="ir.actions.act_window">
+            <field name="name">Configure Re-Check and Re-eval Register</field>
+            <field name="res_model">cst.exam.re.eval.registar</field>
+            <field name="view_id" ref="view_list_re_eval_config" />
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active_term': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Configure The Re-Check or Re-Evaluation Register
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

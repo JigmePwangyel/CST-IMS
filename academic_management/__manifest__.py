@@ -1,0 +1,23 @@
+{
+    "name": "Academic Management",
+    "version": "1.0",
+    "website": "https//www.theodooguys.com",
+    "author": "Kinzang Wangdi",
+    "description": "Definitive Programme Documentation",
+    "category": "Education",
+    "depends": ["base", "openeducat_core"],
+    "data": [
+        "security/groups.xml",
+        "security/record_rule.xml",
+        "security/ir.model.access.csv",
+        "views/course_management.xml",
+        "views/subjects.xml",
+        "views/cst_academic_term_custom.xml",
+        "views/cst_batch_management_custom.xml",
+        "views/offer_repeat_module.xml",
+        "views/menu.xml",
+    ],
+    "installable": True,
+    "license": "LGPL-3",
+    "application": True,
+}

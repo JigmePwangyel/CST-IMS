@@ -1,0 +1,229 @@
+<odoo>
+    <data>
+        <!--Template for RE Evaluation Application Form-->
+        <template id="reeval_application_form" name="RE Evaluation Application Form">
+            <t t-call="website.layout">
+                <div class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card shadow-lg rounded-4 border-0">
+                                <div class="card-body p-5">
+                                    <h2 class="mb-4 text-center text-black fw-bold">
+                                        <t t-if="registar.type == 'recheck'">Re-Check</t>
+                                        <t
+                                            t-elif="registar.type == 'reevaluation'">Re-Evaluation
+                                        </t>
+                                        Application Form </h2>
+                                    <h5 class="text-center text-muted mb-4"> Semester: <t
+                                            t-esc="registar.term_id.name" />
+                                    </h5>
+                                    <form method="post" action="/student/reeval-application/submit"
+                                        enctype="multipart/form-data">
+                                        <input type="hidden" name="csrf_token"
+                                            t-att-value="request.csrf_token()" />
+                                        <!-- Student Name -->
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Name</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="student.name" readonly="readonly" />
+                                        </div>
+
+                                        <!-- Student Number -->
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Student Number</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="student.student_number"
+                                                readonly="readonly" />
+                                        </div>
+
+                                        <!-- Programme -->
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Programme</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="student.course_id.name"
+                                                readonly="readonly" />
+                                        </div>
+
+                                        <!-- Subjects for Re-Evaluation -->
+                                        <div class="mb-4">
+                                            <label class="form-label fw-semibold">Subjects Available</label>
+                                            <div class="border rounded p-3 bg-light">
+                                                <t t-if="subject_ids">
+                                                    <div t-foreach="subject_ids" t-as="subject"
+                                                        class="form-check mb-2">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            name="subject_ids[]"
+                                                            t-att-value="subject.id"
+                                                            t-att-id="'subject_' + str(subject.id)" />
+                                                        <label class="form-check-label text-black"
+                                                            t-att-for="'subject_' + str(subject.id)">
+                                                            <t t-esc="subject.name" />
+                                                            <span
+                                                                class="badge bg-primary text-light">
+                                                                <t t-esc="subject.code" />
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </t>
+                                                <t t-else="">
+                                                    <p class="text-muted">No subjects available for
+                                                        Re Evaluation.</p>
+                                                </t>
+                                            </div>
+                                        </div>
+
+                                        <!-- Attachment Field -->
+                                        <div class="mb-4">
+                                            <label class="form-label fw-semibold">Attach Supporting
+                                                Documents (if any)</label>
+                                            <input type="file" class="form-control"
+                                                name="attachment" multiple="multiple"
+                                                required="required" />
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit"
+                                                class="btn btn-primary btn-lg px-5">Submit
+                                                Application</button>
+                                        </div>
+                                        <input type="hidden" name="registar_id"
+                                            t-att-value="registar.id" />
+                                        <input type="hidden" name="student_id"
+                                            t-att-value="student.id" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--Template
+        that is displayed after application is submitted-->
+        <template id="thanks_reeval" name="Re-Eval Application Submitted">
+            <t t-call="website.layout">
+                <div class="container d-flex justify-content-center align-items-center mt-5 mb-5"
+                    style="min-height: 60vh;">
+                    <div class="card shadow-lg border-0 rounded-4 p-4"
+                        style="max-width: 600px; width: 100%;">
+                        <div class="card-body text-center">
+                            <div class="mb-4">
+                                <i class="bi bi-check-circle-fill text-success"
+                                    style="font-size: 4rem;"></i>
+                            </div>
+                            <h3 class="card-title fw-bold text-success mb-3">
+                                Application Submitted!
+                            </h3>
+                            <p class="text-muted fs-5">
+                                Thank you. Your re-evaluation application has been successfully
+                                submitted.
+                            </p>
+                            <hr class="my-4" />
+                            <a href="/" class="btn btn-outline-primary rounded-pill px-4">
+                                Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--Template
+        that is displayed after application is submitted-->
+        <template id="already_applied_reeval_template" name="Already Applied Re-Eval">
+            <t t-call="website.layout">
+                <div class="container mt-5">
+                    <div class="card shadow rounded-3 border-0">
+                        <div class="card-body p-4">
+                            <h4 class="card-title fw-bold text-secondary mb-3">
+                                Re Evaluation Already Submitted
+                            </h4>
+                            <p class="mb-3 text-muted">
+                                You have already submitted your application for re-evaluation.
+                            </p>
+                            <div class="mb-3">
+                                <strong>Term:</strong>
+                                <span class="badge bg-primary">
+                                    <t t-esc="re_register.term_id.name" />
+                                </span>
+                            </div>
+                            <a href="/student/my/reeval/application"
+                                class="btn btn-secondary mt-3">
+                                View My Re Evaluation Application
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--Template
+        to fetch your application details-->
+        <template id="view_my_re_eval_application" name="My RE Eval Application">
+            <t t-call="website.layout">
+                <div class="container my-5">
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body p-4">
+
+                            <!-- Title -->
+                            <h4 class="text-secondary fw-bold mb-3">
+                                My Re-Evaluation Application
+                            </h4>
+
+                            <!-- Term Information -->
+                            <div class="mb-3">
+                                <span>Term:</span>
+                                <span class="badge bg-primary">
+                                    <t t-esc="re_eval_request.re_eval_registar_id.term_id.name" />
+                                </span>
+                            </div>
+
+                            <!-- Submission Date -->
+                            <div class="mb-3 d-flex align-items-center gap-2">
+                                <span>Submitted On:</span>
+                                <div class="fs-6 fw-bold ">
+                                    <t t-esc="re_eval_request.create_date.strftime('%d %B %Y')" />
+                                </div>
+                            </div>
+
+
+                            <!-- Subjects List -->
+                            <div class="mb-3">
+                                <strong>Subjects Applied For </strong>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <t t-foreach="re_eval_request.subject_ids" t-as="subject">
+                                        <span
+                                            class="badge bg-light text-dark border shadow-sm px-3 py-2 rounded-pill">
+                                            <strong>
+                                                <t t-esc="subject.name" />
+                                            </strong>
+                                            <small class="text-muted ms-2">(<t t-esc="subject.code" />
+                                                )</small>
+                                        </span>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <span>Invoice Reference</span>
+                                <span class="badge bg-primary">
+                                    <t t-esc="re_eval_request.invoice_id.name" />
+                                </span>
+                            </div>
+
+
+                            <!-- Navigation Button -->
+                            <div class="mt-4">
+                                <a href="/student/re_eval_application/" class="btn btn-secondary">
+                                    Back to Re-Evaluation Page
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

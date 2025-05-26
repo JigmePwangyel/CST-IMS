@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <!--List View
+        Inherit-->
+        <record id="student_list_view_inherit" model="ir.ui.view">
+            <field name="name">student.list.view.inheirt</field>
+            <field name="model">op.student</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_student_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='blood_group']" position="replace">
+                    <field name="student_number" />
+                </xpath>
+                <xpath expr="//field[@name='emergency_contact']" position="replace">
+                    <field name="scholarship_id" />
+                </xpath>
+                <xpath expr="//field[@name='nationality']" position="replace">
+                    <field name="year" />
+                </xpath>
+                <xpath expr="//field[@name='lang']" position="replace">
+                    <field name="blood_group" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

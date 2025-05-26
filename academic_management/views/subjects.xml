@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!-- Subject Form View Customization -->
+    <record id="view_op_subject_form_inherit" model="ir.ui.view">
+        <field name="name">op.subject.form.inherit</field>
+        <field name="model">op.subject</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_subject_form" />
+        <field name="arch" type="xml">
+            <!-- Replace the type field -->
+            <xpath expr="//field[@name='type']" position="replace">
+                <field name="moduletype" />
+            </xpath>
+
+            <!-- Replace the grade_weightage with credit field -->
+            <xpath expr="//group//field[@name='grade_weightage']" position="replace">
+                <field name="credit" />
+            </xpath>
+
+            <xpath expr="//group//field[@name='credit']" position="after">
+                <field name="course_id" />
+            </xpath>
+            <!--  Edit and add the assessment weights          -->
+            <xpath expr="//sheet/group" position="after">
+                <notebook invisible="moduletype == False">
+                    <page string="Assessment Weightage">
+                        <group>
+                            <field name="ca_weightage" string="Continuous Assessment" />
+                            <field name="practical_weightage" string="Practical Assessment"
+                                readonly="moduletype in ['without_practical','without_exam']" />
+                            <field name="exam_weightage" string="Exam"
+                                readonly="moduletype =='without_exam'" />
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Subject List View Customization -->
+    <record id="view_op_subject_tree_inherit" model="ir.ui.view">
+        <field name="name">op.subject.tree.inherit</field>
+        <field name="model">op.subject</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_subject_tree" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='type']" position="replace">
+                <field name="moduletype" />
+            </xpath>
+
+            <!-- Replace the grade_weightage with credit field -->
+            <xpath expr="//field[@name='grade_weightage']" position="replace">
+                <field name="credit" />
+            </xpath>
+
+            <!-- Add CA Weightage, Credit, Practical Weightage, and Exam Weightage fields in the
+            list view -->
+            <xpath expr="//list" position="inside">
+                <field name="ca_weightage" />
+                <field name="practical_weightage" />
+                <field name="exam_weightage" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add the search view -->
+    <record id="view_op_subject_search_inherit" model="ir.ui.view">
+        <field name="name">op.subject.search.inherit</field>
+        <field name="model">op.subject</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_subject_search" />
+        <field name="arch" type="xml">
+            <!-- Add the new filter inside the existing <group> -->
+            <xpath expr="//group[filter[@name='group_by_subject_type']]" position="after">
+                <filter string="Course" name="group_by_course" context="{'group_by':'course_id'}" />
+            </xpath>
+
+            <!-- Add the search panel after the <search> block -->
+            <xpath expr="//search" position="inside">
+                <searchpanel>
+                    <field name="course_id" icon="fa-filter" groupby="group_by_course" limit="0" />
+                </searchpanel>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Define the pivot View for subjects -->
+    <record id="view_op_subject_pivot" model="ir.ui.view">
+        <field name="name">op.subject.pivot</field>
+        <field name="model">op.subject</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <pivot string="Subject">
+                <field name="name" type="row" />
+                <field name="code" />
+                <field name="type" />
+                <field name="course_id" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Define the Kanban View for subjects -->
+    <record id="view_op_subject_kanban" model="ir.ui.view">
+        <field name="name">op.subject.kanban</field>
+        <field name="model">op.subject</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name" />
+                <field name="course_id" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_details">
+                            <strong>
+                                <field name="name" />
+                            </strong>
+                            <div>
+                                <field name="course_id" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- Inherit and Update the Action for subjects pivot view -->
+    <record id="openeducat_core.act_open_op_subject_view" model="ir.actions.act_window">
+        <field name="view_mode">list,kanban,form,pivot</field>  <!-- Add Kanban here -->
+        <field name="view_id" ref="academic_management.view_op_subject_pivot" />
+    </record>
+</odoo>

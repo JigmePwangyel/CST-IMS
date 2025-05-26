@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <!--Kanban View
+        Inherit-->
+        <record id="student_kanban_view_inherit" model="ir.ui.view">
+            <field name="name">student.kanban.view.inheirt</field>
+            <field name="model">op.student</field>
+            <field name="inherit_id" ref="openeducat_core.kanban_view_student" />
+            <field name="arch" type="xml">
+                <xpath expr="//ul" position="replace">
+                    <ul>
+                        <li t-if="record.student_number.raw_value">
+                            <i class="fa fa-id-badge" style="margin-right: 8px;"
+                                title="Student Number"></i>
+                            <field name="student_number" />
+                        </li>
+                        <li t-if="record.college_email.raw_value">
+                            <i class="fa fa-envelope" style="margin-right: 8px;"
+                                title="Email Address"></i>
+                            <field name="college_email" />
+                        </li>
+                        <li t-if="record.private_mobile_number.raw_value">
+                            <i class="fa fa-mobile" style="margin-right: 8px;" title="Mobile Number"></i>
+                            <field name="private_mobile_number" />
+                        </li>
+                    </ul>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

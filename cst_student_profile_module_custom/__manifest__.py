@@ -1,0 +1,34 @@
+{
+    "name": "CST Student Profile Management",
+    "version": "18.0.0.0",
+    "license": "LGPL-3",
+    "category": "Education",
+    "sequence": 1,
+    "summary": "Customizing OpeneducatCore Student Profile to fix the need of CST",
+    "author": "Jigme Phuntsho Wangyel",
+    "website": "https://www.1.1.1.1.core",
+    "depends": ["openeducat_core", "openeducat_activity"],
+    "data": [
+        # SECURITY
+        "security/groups.xml",
+        "security/ir.model.access.csv",
+        "security/record_rule.xml",
+        # VIEWS
+        "views/student_form_view_inherit.xml",
+        "views/kanban_view_inherit.xml",
+        "views/list_view_inherit.xml",
+        "views/search_view_inherit.xml",
+        "views/student_activity_inherit.xml",
+        "views/student_leadership.xml",
+        "views/student_scholarship.xml",
+        "views/student_discipline.xml",
+        "views/student_achievement.xml",
+        "views/batch_inherit.xml",
+        # MENUS
+        "views/menu.xml",
+    ],
+    "demo": [],
+    "installable": True,
+    "auto_install": False,
+    "application": False,
+}

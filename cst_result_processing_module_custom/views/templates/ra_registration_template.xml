@@ -1,0 +1,209 @@
+<odoo>
+    <data>
+
+        <!--Template that displays registration is open-->
+        <template id="ra_registration_template" name="RA Registration Page">
+            <t t-call="website.layout">
+                <div class="container my-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card shadow-lg rounded-lg border-0">
+                                <div class="card-body text-center p-5 text-black">
+                                    <h2 class="card-title mb-4 text-black">
+                                        <i class="fa fa-edit me-2"></i>Re-Assessment Registration </h2>
+                                    <t t-if="ra_register">
+                                        <p class="lead text-black"> RA Registration for <strong>
+                                                <t t-esc="ra_register.term_id.name" />
+                                            </strong>
+                                            is currently <span class="fw-bold">open</span>. </p>
+                                        <a href="/student/ra-registration/apply"
+                                            class="btn btn-primary btn-lg mt-4">
+                                            <i class="fa fa-paper-plane me-2"></i>Apply Now </a>
+                                    </t>
+                                    <t t-else="">
+                                        <p class="text-muted fs-5">No active RA registration is
+                                            available at the moment.</p>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--Template
+        for application form-->
+        <template id="ra_application_form" name="RA Application Form">
+            <t t-call="website.layout">
+                <div class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card shadow-lg rounded-4 border-0">
+                                <div class="card-body p-5">
+                                    <h2 class="mb-4 text-center text-black fw-bold">
+                                        Re-Assessment Application
+                                    </h2>
+                                    <h5 class="text-center text-muted mb-4"> Semester: <t
+                                            t-esc="ra_register.term_id.name" />
+                                    </h5>
+                                    <form method="post" action="/student/ra-registration/submit">
+                                        <input type="hidden" name="csrf_token"
+                                            t-att-value="request.csrf_token()" /><!-- CSRF token
+                                        included here -->
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Name</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="student.name" readonly="readonly" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Student Number</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="student.student_number"
+                                                readonly="readonly" />
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label fw-semibold">Programme</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="student.course_id.name"
+                                                readonly="readonly" />
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <h5 class="text-black fw-semibold mb-3">Subjects
+                                                Eligible for Re-Assessment</h5>
+                                            <div class="border rounded p-3 bg-light">
+                                                <t t-if="subject_ids">
+                                                    <div t-foreach="subject_ids" t-as="subject"
+                                                        class="form-check mb-2">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            name="subject_ids[]"
+                                                            t-att-value="subject.id"
+                                                            t-att-id="'subject_' + str(subject.id)" />
+                                                        <label class="form-check-label text-black"
+                                                            t-att-for="'subject_' + str(subject.id)">
+                                                            <t t-esc="subject.name" />
+                                                            <span
+                                                                class="badge bg-primary text-light">
+                                                                <t t-esc="subject.code" />
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </t>
+                                                <t t-else="">
+                                                    <p class="text-muted">No subjects available for
+                                                        RA.</p>
+                                                </t>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" name="ra_register_id"
+                                            t-att-value="ra_register.id" />
+                                        <input type="hidden" name="student_id"
+                                            t-att-value="student.id" />
+                                        <div class="text-center">
+                                            <button type="submit"
+                                                class="btn btn-primary btn-lg px-5">Submit
+                                                Application</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+        <!--Template
+        that is displayed after application is submitted-->
+        <template id="already_applied_template" name="Already Applied RA">
+            <t t-call="website.layout">
+                <div class="container mt-5">
+                    <div class="card shadow rounded-3 border-0">
+                        <div class="card-body p-4">
+                            <h4 class="card-title fw-bold text-secondary mb-3">
+                                RA Registration Already Submitted
+                            </h4>
+                            <p class="mb-3 text-muted">
+                                You have already submitted your application for re-assessment.
+                            </p>
+                            <div class="mb-3">
+                                <strong>Term:</strong>
+                                <span class="badge bg-primary">
+                                    <t t-esc="ra_register.term_id.name" />
+                                </span>
+                            </div>
+                            <a href="/student/my-ra-application"
+                                class="btn btn-secondary mt-3">
+                                View My RA Application
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!--Template
+        to fetch your application details-->
+        <template id="view_my_ra_application" name="My RA Application">
+            <t t-call="website.layout">
+                <div class="container my-5">
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body p-4">
+
+                            <!-- Title -->
+                            <h4 class="text-secondary fw-bold mb-3">
+                                My Re-Assessment Application
+                            </h4>
+
+                            <!-- Term Information -->
+                            <div class="mb-3">
+                                <span>Term:</span>
+                                <span class="badge bg-primary">
+                                    <t t-esc="ra_request.ra_register_id.term_id.name" />
+                                </span>
+                            </div>
+
+                            <!-- Submission Date -->
+                            <div class="mb-3 d-flex align-items-center gap-2">
+                                <span>Submitted On:</span>
+                                <div class="fs-6 fw-bold ">
+                                    <t t-esc="ra_request.create_date.strftime('%d %B %Y')" />
+                                </div>
+                            </div>
+
+
+                            <!-- Subjects List -->
+                            <div class="mb-3">
+                                <strong>Subjects Applied For </strong>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <t t-foreach="ra_request.subject_ids" t-as="subject">
+                                        <span
+                                            class="badge bg-light text-dark border shadow-sm px-3 py-2 rounded-pill">
+                                            <strong>
+                                                <t t-esc="subject.name" />
+                                            </strong>
+                                            <small class="text-muted ms-2">(<t t-esc="subject.code" />
+                                                )</small>
+                                        </span>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Navigation Button -->
+                            <div class="mt-4">
+                                <a href="/student/ra-registration" class="btn btn-secondary">
+                                    Back to RA Registration Page
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

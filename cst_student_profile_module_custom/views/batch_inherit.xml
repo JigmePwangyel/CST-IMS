@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id="batch_list_view_inherit" model="ir.ui.view">
+            <field name="name">batch.list.inherit</field>
+            <field name="model">op.batch</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_batch_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="year" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="batch_form_view_inherit" model="ir.ui.view">
+            <field name="name">batch.form.inherit</field>
+            <field name="model">op.batch</field>
+            <field name="inherit_id" ref="openeducat_core.view_op_batch_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='end_date']" position="after">
+                    <field name="year" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

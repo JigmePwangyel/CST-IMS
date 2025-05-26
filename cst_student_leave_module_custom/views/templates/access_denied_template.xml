@@ -1,0 +1,38 @@
+<odoo>
+    <template id="template_leave_access_denied">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="text-center">
+                    <h1 class="text-danger mb-4">Access Denied</h1>
+                    <p class="fs-5 text-muted">
+                        You are not in the required user group to access this page.
+                    </p>
+                    <div class="mt-4">
+                        <a href="/" class="btn btn-outline-primary">Go Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="template_leave_error_template">
+        <t t-call="website.layout">
+            <div
+                class="container d-flex flex-column align-items-center justify-content-center vh-100">
+                <div class="text-center">
+                    <h1 class="display-1 fw-bold text-danger">Error</h1>
+                    <p class="fs-3">
+                        <span class="text-danger">Oops!</span> Something went wrong.</p>
+                    <p class="lead">
+                        We’re working on it. Please try again later.
+                    </p>
+                    <div class="mt-4">
+                        <a href="/" class="btn btn-primary btn-lg me-2">Go Home</a>
+                        <a href="/contactus" class="btn btn-outline-secondary btn-lg">Contact
+                            Support</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

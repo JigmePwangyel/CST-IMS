@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Search View-->
+        <record id="view_search_student_leave" model="ir.ui.view">
+            <field name="name">student.leave.search</field>
+            <field name="model">cst.student.leave</field>
+            <field name="arch" type="xml">
+                <search>
+                    <!-- Standard Search Filters -->
+                    <field name="state" />
+                    <field name="student_id" />
+                    <field name="holiday_status_id" />
+                    <filter string="To Approve" name="confirm_state"
+                        domain="[('state','=','confirm')]" />
+                    <filter string="Approved Leave" name="validate_state"
+                        domain="[('state','=','validate')]" />
+                    <filter string="Refused Leave" name="refused_state"
+                        domain="[('state','=','refuse')]" />
+                    <filter string="Cancelled Leave" name="cancelled_state"
+                        domain="[('state','=','cancel')]" />
+
+                    <filter string="Waiting for me" name="wating"
+                        domain="[('approver_user_id','=',uid)]"
+                        groups="cst_student_leave_module_custom.student_leave_approver_group,cst_student_leave_module_custom.student_leave_admin_group" />
+
+
+                    <!-- Search Panel for Filtering -->
+                    <searchpanel
+                        groups="cst_student_leave_module_custom.student_leave_approver_group,cst_student_leave_module_custom.student_leave_admin_group">
+                        <!-- Filter by Student -->
+                        <field name="course_id" widget="selection" />
+
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+
+        <!--Form
+        View-->
+        <record id="apply_student_leave" model="ir.ui.view">
+            <field name="name">student.leave.form</field>
+            <field name="model">cst.student.leave</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="leave_approver_id" invisible="1" />
+                    <header>
+                        <button string="Approve" name="action_approve" type="object"
+                            class="oe_highlight"
+                            groups="cst_student_leave_module_custom.student_leave_approver_group,cst_student_leave_module_custom.student_leave_admin_group"
+                            invisible="state not in ('confirm','refuse')"
+                        />
+                        <button
+                            string="Refuse"
+                            name="action_refuse"
+                            type="object"
+                            groups="cst_student_leave_module_custom.student_leave_approver_group,cst_student_leave_module_custom.student_leave_admin_group"
+                            invisible="state not in ('confirm', 'validate')"
+                        />
+                        <button
+                            string="Cancel" name="action_cancel" type="object"
+                            invisible="state=='cancel'"
+                            groups="cst_student_leave_module_custom.student_leave_student_group" />
+
+                        <button
+                            string="Reset" name="action_reset_confirm" type="object"
+                            groups="cst_student_leave_module_custom.student_leave_admin_group"
+                            invisible="state not in ['cancel', 'refuse']" /> /> <!--Status
+                        of leave-->
+                        <field
+                            name="state" widget="statusbar"
+                            statusbar_visible="confirm,validate,cancel" />
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Approved"
+                            invisible="state != 'validate'" />
+
+                        <widget name="web_ribbon" title="Cancelled"
+                            invisible="state != 'cancel'" bg_color="bg-danger" />
+
+                        <widget name="web_ribbon" title="Refused"
+                            invisible="state != 'refuse'" bg_color="bg-secondary" />
+                        <div>
+                            <group name="col_left">
+                                <field name="student_id"
+                                    groups="cst_student_leave_module_custom.student_leave_approver_group,cst_student_leave_module_custom.student_leave_admin_group"
+                                    widget="many2one_avatar_user"
+                                    readonly="state in ('validate','refuse','cancel')" />
+                                <field name="course_id" class="fw-bold"
+                                    groups="cst_student_leave_module_custom.student_leave_approver_group,cst_student_leave_module_custom.student_leave_admin_group" />
+
+                                <field name="holiday_status_id" class="fw-bold"
+                                    readonly="state in ('validate','refuse','cancel')" />
+                                <label for="date_from" string="Date" />
+                                <div class="o_row">
+                                    <field name="date_from" widget="daterange"
+                                        options="{'end_date_field': 'date_to'}" class="oe_inline"
+                                        readonly="state in ('validate','refuse','cancel')" />
+                                </div>
+                                <field name="number_of_days" readonly="1" string="Duration (Days)" />
+                                <field name="leave_approver_id" readonly="1" class="fw-bold" />
+                                <field name="name" widget="text"
+                                    placeholder="Add a description..."
+                                    readonly="state in ('validate','refuse','cancel')" />
+                                <field name="leave_type_support_document" invisible="1" />
+                                <label for="supported_attachment_ids" string="Supporting Document"
+                                    invisible="not leave_type_support_document or state not in ('confirm', 'validate')" />
+                                <field name="supported_attachment_ids" widget="many2many_binary"
+                                    nolabel="1"
+                                    invisible="not leave_type_support_document or state not in ('confirm', 'validate')"
+                                    readonly="state in ('validate','refuse','cancel')" />
+                            </group>
+                        </div>
+                    </sheet>
+                    <div class="o_attachment_preview" />
+                    <chatter reload_on_post="True" reload_on_attachment="True" />
+                </form>
+            </field>
+        </record>
+
+        <!--List
+        View-->
+        <record id="view_list_student_leave" model="ir.ui.view">
+            <field name="name">student.leave.list</field>
+            <field name="model">cst.student.leave</field>
+            <field name="arch" type="xml">
+                <list string="My Time Off">
+                    <field name="holiday_status_id" class="fw-bold"
+                        readonly="state in ['cancel', 'refuse', 'validate', 'validate1']" />
+                    <field name="student_id" class="fw-bold" />
+                    <field name="name" column_invisible="True" />
+                    <field name="leave_approver_id" />
+                    <field name="date_from"
+                        readonly="state in ['cancel', 'refuse', 'validate', 'validate1']" />
+                    <field name="date_to"
+                        readonly="state in ['cancel', 'refuse', 'validate', 'validate1']" />
+                    <field name="number_of_days" string="Duration (Days)" />
+                    <field name="state" widget="badge"
+                        decoration-warning="state in ('confirm','validate1')"
+                        decoration-success="state == 'validate'"
+                        decoration-danger="state == 'cancel'" />
+                    <button string="Validate" name="action_approve" type="object" icon="fa-check"
+                        invisible="state == 'validate'"
+                        groups="cst_student_leave_module_custom.student_leave_approver_group,cst_student_leave_module_custom.student_leave_admin_group" />
+                    <button string="Refuse" name="action_refuse" type="object" icon="fa-times"
+                        invisible="state not in ('confirm', 'validate')"
+                        groups="cst_student_leave_module_custom.student_leave_approver_group,cst_student_leave_module_custom.student_leave_admin_group" />
+                </list>
+            </field>
+        </record>
+
+        <!--Actions-->
+        <record id="action_open_student_leave" model="ir.actions.act_window">
+            <field name="name">Student Leave Records</field>
+            <field name="res_model">cst.student.leave</field>
+            <field name="view_id" ref="view_list_student_leave" />
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_wating': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Keep Track Of Your Leave Request
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

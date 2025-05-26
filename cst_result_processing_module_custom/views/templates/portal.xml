@@ -1,0 +1,100 @@
+<odoo>
+    <data>
+        <template id="portal_my_home_exam" inherit_id="portal.portal_my_home">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon"
+                        t-value="'/cst_result_processing_module_custom/static/description/exam_logo.svg'" />
+                    <t t-set="title">Exam</t>
+                    <t t-set="text">Submit exam service applications online</t>
+                    <t t-set="url" t-value="'/my/exam'" />
+                    <t t-set="config_card" t-value="True" />
+                </t>
+
+            </xpath>
+        </template>
+
+        <template id="exam_portal_template"
+            inherit_id="cst_result_processing_module_custom.exam_portal_main_template">
+            <xpath expr="//div[@id='portal_common_category']" position="inside">
+
+                <t t-call="portal.portal_docs_entry">
+                    <!-- <t t-set="icon"
+                            t-value="'/cst_result_processing_module_custom/static/description/exam.png'" /> -->
+                    <t t-set="title">Your Results</t>
+                    <t t-set="text">View your results here.</t>
+                    <t t-set="url" t-value="'/student/results/'" />
+                    <t t-set="config_card" t-value="True" />
+                </t>
+
+            </xpath>
+        </template>
+
+        <template
+            id="portal_my_home_reassessment"
+            inherit_id="cst_result_processing_module_custom.exam_portal_main_template">
+            <xpath expr="//div[@id='portal_common_category']" position="inside">
+                <t
+                    t-if="request.env['cst.exam.ra.register'].search([('is_published', '=', True)])">
+                    <t
+                        t-foreach="request.env['cst.exam.ra.register'].search([('is_published', '=', True)])"
+                        t-as="ra">
+                        <!-- Card Layout for Re-Assessment Registration -->
+                        <t t-call="portal.portal_docs_entry">
+                            <t t-set="title">Re-Assessment Registration</t>
+                            <t t-set="text">Apply for your re-assessment exams here.</t>
+                            <t t-set="url" t-value="'/student/ra-registration'" />
+                            <t t-set="config_card" t-value="True" />
+                        </t>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+        <template
+            id="portal_my_home_re_eval"
+            inherit_id="cst_result_processing_module_custom.exam_portal_main_template">
+            <xpath expr="//div[@id='portal_common_category']" position="inside">
+                <t
+                    t-if="request.env['cst.exam.re.eval.registar'].search([('is_published', '=', True),('type','=','reevaluation')])">
+                    <t
+                        t-foreach="request.env['cst.exam.re.eval.registar'].search([('is_published', '=', True),('type','=','reevaluation')])"
+                        t-as="ra">
+                        <!-- Card Layout for Re-Assessment Registration -->
+                        <t t-call="portal.portal_docs_entry">
+                            <t t-set="title">Re-Evaluation Registration</t>
+                            <t t-set="text">Apply for your re-evaluation of papers here.</t>
+                            <t t-set="url" t-value="'/student/re_eval_application/'" />
+                            <t t-set="config_card" t-value="True" />
+                        </t>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="portal_my_home_re_check"
+            inherit_id="cst_result_processing_module_custom.exam_portal_main_template">
+            <xpath expr="//div[@id='portal_common_category']" position="inside">
+                <t
+                    t-if="request.env['cst.exam.re.eval.registar'].search([('is_published', '=',
+                    True),('type','=','recheck')])">
+                    <t
+                        t-foreach="request.env['cst.exam.re.eval.registar'].search([('is_published', '=',
+                        True),('type','=','recheck')])"
+                        t-as="ra">
+
+                        <t
+                            t-call="portal.portal_docs_entry">
+                            <t t-set="title">Re-Check Registration</t>
+                            <t t-set="text">Apply for your re-check of papers here.</t>
+                            <t t-set="url" t-value="'/student/re_check_application/'" />
+                            <t t-set="config_card" t-value="True" />
+                        </t>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

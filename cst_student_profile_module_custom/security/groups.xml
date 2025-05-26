@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!--Define the student category-->
+    <record id="module_category_student_information" model="ir.module.category">
+        <field name="name">Student Information System</field>
+        <field name="description">User Category for SIS</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <!--******Defining
+    the groups********-->
+
+    <!--Student
+    Group, They can only view individual records-->
+    <record id="group_student_user"
+        model="res.groups">
+        <field name="name">Student User: View Individual Student Record</field>
+        <field name="category_id"
+            ref="cst_student_profile_module_custom.module_category_student_information" />
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+    <!--Staff
+    Group, This group is allowed to view all student record but does not have create, update and delete
+    permission-->
+    <record
+        id="group_staff_user" model="res.groups">
+        <field name="name">Staff User: View all Student Information </field>
+        <field name="category_id"
+            ref="cst_student_profile_module_custom.module_category_student_information" />
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+    <!--Staff,
+    SSO, DSA, AND ADM ASST-->
+    <record
+        id="group_adm_user" model="res.groups">
+        <field name="name">SSO/DSA/ADM User: View all Student Information and All Access To SIS
+            module</field>
+        <field name="category_id"
+            ref="cst_student_profile_module_custom.module_category_student_information" />
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+    <!--Admin
+    Group, Has all permission in the model-->
+    <record
+        id="group_admin_user" model="res.groups">
+        <field name="name">Admin user: Provide all access to the SIS module</field>
+        <field name="category_id"
+            ref="cst_student_profile_module_custom.module_category_student_information" />
+        <field name="implied_ids" eval="[(4, ref('base.group_system'))]" />
+    </record>
+</odoo>

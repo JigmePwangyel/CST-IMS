@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_result_processing_root"
+            name="Exams"
+            web_icon="cst_result_processing_module_custom,static/description/icon.png" />
+
+        <menuitem id="menu_result_processing_root_child"
+            name="Exams"
+            sequence="1"
+            parent="menu_result_processing_root"
+            groups="exam_tutor_group,exam_cell_group,base.group_system"
+        />
+        <menuitem id="menu_result_processing_marksheet"
+            name="Marksheet Declaration"
+            parent="menu_result_processing_root_child"
+            sequence="1"
+            groups="exam_cell_group,base.group_system"
+            action="action_open_marksheet_declaration_list" />
+
+        <menuitem id="menu_result_processing_mark_upload"
+            name="Mark Upload"
+            parent="menu_result_processing_root_child"
+            sequence="2"
+            groups="exam_tutor_group,exam_cell_group,base.group_system"
+            action="cst_result_processing_module_custom.action_open_upload_marks" />
+
+        <menuitem id="menu_result_processing_result"
+            name="Result"
+            parent="menu_result_processing_root_child"
+            sequence="3"
+            groups="exam_tutor_group,exam_cell_group,base.group_system"
+            action="cst_result_processing_module_custom.action_open_result" />
+
+        <menuitem id="menu_result_processing_ra"
+            name="Re-Assessment"
+            parent="cst_result_processing_module_custom.menu_result_processing_root"
+            sequence="2"
+            groups="exam_cell_group,base.group_system"
+        />
+
+        <menuitem id="menu_result_processing_ra_configuration"
+            name="Re-Assessment"
+            parent="menu_result_processing_ra"
+            sequence="1"
+            groups="exam_cell_group,base.group_system"
+            action="cst_result_processing_module_custom.action_open_ra_config"
+        />
+
+        <menuitem id="menu_result_processing_ra_applications"
+            name="Application"
+            parent="menu_result_processing_ra"
+            sequence="2"
+            groups="exam_cell_group,base.group_system"
+            action="cst_result_processing_module_custom.action_open_ra_application"
+        />
+
+        <menuitem id="menu_result_processing_re_eval"
+            name="Re-Check and Re-Evaluation"
+            parent="cst_result_processing_module_custom.menu_result_processing_root"
+            sequence="3"
+            groups="exam_cell_group,base.group_system"
+        />
+
+        <menuitem id="menu_result_processing_re_configuration"
+            name="Configure"
+            parent="menu_result_processing_re_eval"
+            sequence="1"
+            groups="exam_cell_group,base.group_system"
+            action="cst_result_processing_module_custom.action_open_re_eval_config"
+        />
+
+        <menuitem id="menu_result_processing_re_eval_applications"
+            name="Application"
+            parent="menu_result_processing_re_eval"
+            sequence="2"
+            groups="exam_cell_group,base.group_system"
+            action="cst_result_processing_module_custom.action_open_re_eval_application"
+        />
+
+    </data>
+</odoo>

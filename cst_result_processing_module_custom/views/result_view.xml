@@ -1,0 +1,99 @@
+<odoo>
+    <data>
+
+        <!--Search View-->
+        <record id="view_search_result" model="ir.ui.view">
+            <field name="name">result.search</field>
+            <field name="model">cst.exam.result</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+                    <field name="student_id" />
+                    <field name="student_number" />
+                </search>
+            </field>
+        </record>
+
+        <!--Form
+        View-->
+        <record id="view_subject_result_form" model="ir.ui.view">
+            <field name="name">result.form</field>
+            <field name="model">cst.exam.result</field>
+            <field name="arch" type="xml">
+                <form create="false">
+                    <header>
+                        <button string="Compute Result" name="compute_result" type="object"
+                            class="oe_highlight" invisible="1"
+                        />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Student Information">
+                                <field name="student_id" widget="many2one_avatar_user" />
+                                <field name="student_number" />
+                            </group>
+                            <group string="Result Information">
+                                <field name="marksheet_id" />
+                                <field name="result" widget="badge"
+                                    decoration-success="result == 'pass'"
+                                    decoration-danger="result == 'fail'" />
+                                <field name="percentage" widget="monetary"
+                                    options="{'currency_field': 'percentage_currency'}" />
+                            </group>
+                            <notebook>
+                                <page string="Student Mark">
+                                    <field name="marks_ids" readonly="1">
+                                        <list>
+                                            <field name="student_id" />
+                                            <field name="student_number" />
+                                            <field name="subject_id" />
+                                            <field name="ca_marks" />
+                                            <field name="practical_marks" />
+                                            <field name="exam_marks" />
+                                            <field name="final_total_marks" />
+                                            <field name="remarks" widget="badge"
+                                                decoration-success="remarks in ('pass','pass_ra')"
+                                                decoration-warning="remarks in ('ra')"
+                                                decoration-danger="remarks in ('fail')" />
+                                        </list>
+                                    </field>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                    <chatter />
+                </form>
+            </field>
+        </record>
+
+        <!--List-->
+        <record id="view_result_list" model="ir.ui.view">
+            <field name="name">result.list</field>
+            <field name="model">cst.exam.result</field>
+            <field name="arch" type="xml">
+                <list create="false">
+                    <!-- Fields to be shown in the list view -->
+                    <field name="marksheet_id" />
+                    <field name="student_id" widget="many2one_avatar_user" />
+                    <field name="student_number" />
+                    <field name="result" widget="badge"
+                        decoration-success="result == 'pass'"
+                        decoration-danger="result == 'fail'" />
+                </list>
+            </field>
+        </record>
+
+        <!--Action -->
+        <record id="action_open_result" model="ir.actions.act_window">
+            <field name="name">Student Result</field>
+            <field name="res_model">cst.exam.result</field>
+            <field name="view_id" ref="view_result_list" />
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    View Student Result
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

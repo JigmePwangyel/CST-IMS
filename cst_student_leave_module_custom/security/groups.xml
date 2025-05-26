@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Category
+        Definition-->
+        <record id="module_category_student_leave" model="ir.module.category">
+            <field name="name">Student Leave System</field>
+            <field name="description">User Category for Student Leave System</field>
+            <field name="sequence">50</field>
+        </record>
+
+
+        <!--Group
+        Definition-->
+        <record id="student_leave_student_group" model="res.groups">
+            <field name="name">Student User: Apply for Student Leave</field>
+            <field name="category_id" ref="module_category_student_leave" />
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+        </record>
+
+        <record id="student_leave_approver_group" model="res.groups">
+            <field name="name">Approver User: Manage Student Leave</field>
+            <field name="category_id" ref="module_category_student_leave" />
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+        </record>
+
+        <record id="student_leave_admin_group" model="res.groups">
+            <field name="name">Admin Priviledge</field>
+            <field name="category_id" ref="module_category_student_leave" />
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]" />
+        </record>
+    </data>
+</odoo>

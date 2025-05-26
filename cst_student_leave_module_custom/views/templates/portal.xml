@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <template id="leave_portal_main_template" inherit_id="portal.portal_my_home">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon"
+                        t-value="'/cst_student_leave_module_custom/static/description/leave-user.svg'" />
+                    <t t-set="title">Student Leave</t>
+                    <t t-set="text">View, manage, and apply for your leaves.</t>
+                    <t t-set="url" t-value="'/my/student/leave'" />
+                    <t t-set="config_card" t-value="True" />
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

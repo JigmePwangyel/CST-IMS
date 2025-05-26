@@ -1,0 +1,63 @@
+<odoo>
+    <template id="template_access_denied">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="text-center">
+                    <h1 class="text-danger mb-4">Access Denied</h1>
+                    <p class="fs-5 text-muted">
+                        You are not in the required user group to access this page.
+                    </p>
+                    <div class="mt-4">
+                        <a href="/" class="btn btn-outline-primary">Go Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="template_not_eligible" name="Not Eligible Page">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8 col-sm-10">
+                        <div class="text-center">
+                            <h3 class="text-danger mb-4 display-4">You're Not Eligible</h3>
+                            <p class="lead text-muted mb-4">
+                                Unfortunately, you cannot apply for Re-Assessment based on your
+                                current academic records.
+                            </p>
+                            <div class="mt-4">
+                                <a href="/student/ra-registration"
+                                    class="btn btn-outline-primary btn-lg">Go Back to RA
+                                    Registration</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="template_no_subject_selected" name="Not Eligible Page">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8 col-sm-10">
+                        <div class="text-center">
+                            <h3 class="text-danger mb-4 display-4">Unable to process application</h3>
+                            <p class="lead text-muted mb-4">
+                                Unfortunately, you cannot apply for Re-Assessment with no subjects
+                                selected
+                            </p>
+                            <div class="mt-4">
+                                <a href="/student/ra-registration"
+                                    class="btn btn-outline-primary btn-lg">Go Back to RA
+                                    Registration</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

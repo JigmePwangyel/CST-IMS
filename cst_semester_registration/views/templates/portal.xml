@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <template id="sem_registration_portal_main_template" inherit_id="portal.portal_my_home">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon"
+                        t-value="'/cst_semester_registration/static/description/sem_registration.svg'" />
+                    <t t-set="title">Semester Registration</t>
+                    <t t-set="text">Enroll yourself for the semester</t>
+                    <t t-set="url" t-value="'/student/semester_registration'" />
+                    <t t-set="config_card" t-value="True" />
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>
