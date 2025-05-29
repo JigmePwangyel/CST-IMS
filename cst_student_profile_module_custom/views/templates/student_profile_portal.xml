@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Student Profile Portal Template -->
+        <template id="student_profile_portal" name="Student Profile Portal">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True" />
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">My Profile</t>
+                </t>
+
+                <div class="container-fluid">
+                    <style>
+                        .student-profile {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                        sans-serif;
+                        background: #f8f9fa;
+                        min-height: 100vh;
+                        padding: 20px;
+                        margin: -15px;
+                        }
+
+                        .profile-container {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        }
+
+                        .profile-header {
+                        background: white;
+                        border-radius: 8px;
+                        padding: 30px;
+                        margin-bottom: 20px;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                        border: 1px solid #e9ecef;
+                        }
+
+                        .header-content {
+                        display: flex;
+                        align-items: center;
+                        gap: 30px;
+                        flex-wrap: wrap;
+                        }
+
+                        .profile-avatar {
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 50%;
+                        background: #6c757d;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-size: 2rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        }
+
+                        .profile-info h1 {
+                        color: #212529;
+                        font-size: 2rem;
+                        margin-bottom: 15px;
+                        font-weight: 600;
+                        }
+
+                        .student-meta {
+                        display: flex;
+                        gap: 15px;
+                        flex-wrap: wrap;
+                        margin-bottom: 15px;
+                        }
+
+                        .meta-item {
+                        background: #f8f9fa;
+                        padding: 6px 12px;
+                        border-radius: 4px;
+                        font-size: 0.875rem;
+                        color: #6c757d;
+                        border: 1px solid #dee2e6;
+                        }
+
+                        .meta-item i {
+                        margin-right: 6px;
+                        color: #495057;
+                        }
+
+                        .info-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                        gap: 20px;
+                        }
+
+                        .info-card {
+                        background: white;
+                        border-radius: 8px;
+                        padding: 24px;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                        border: 1px solid #e9ecef;
+                        }
+
+                        .card-header {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 20px;
+                        padding-bottom: 15px;
+                        border-bottom: 1px solid #e9ecef;
+                        }
+
+                        .card-header i {
+                        font-size: 1.25rem;
+                        color: #6c757d;
+                        margin-right: 10px;
+                        }
+
+                        .card-header h3 {
+                        color: #212529;
+                        font-size: 1.125rem;
+                        font-weight: 600;
+                        margin: 0;
+                        }
+
+                        .info-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        margin-bottom: 12px;
+                        padding: 8px 0;
+                        }
+
+                        .info-item:last-child {
+                        margin-bottom: 0;
+                        }
+
+                        .info-label {
+                        font-weight: 500;
+                        color: #6c757d;
+                        min-width: 120px;
+                        font-size: 0.875rem;
+                        }
+
+                        .info-value {
+                        color: #212529;
+                        text-align: right;
+                        flex: 1;
+                        font-size: 0.875rem;
+                        }
+
+                        .empty-value {
+                        color: #adb5bd;
+                        font-style: italic;
+                        }
+
+                        .stats-container {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 15px;
+                        margin-bottom: 20px;
+                        }
+
+                        .stat-card {
+                        background: white;
+                        border: 1px solid #e9ecef;
+                        padding: 20px;
+                        border-radius: 8px;
+                        text-align: center;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .stat-number {
+                        font-size: 1.75rem;
+                        font-weight: 600;
+                        margin-bottom: 5px;
+                        color: #212529;
+                        }
+
+                        .stat-label {
+                        font-size: 0.875rem;
+                        color: #6c757d;
+                        font-weight: 500;
+                        }
+
+                        .badge {
+                        display: inline-block;
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        font-size: 0.75rem;
+                        font-weight: 500;
+                        text-transform: uppercase;
+                        margin-right: 8px;
+                        letter-spacing: 0.5px;
+                        }
+
+                        .badge-primary {
+                        background: #e3f2fd;
+                        color: #1565c0;
+                        border: 1px solid #bbdefb;
+                        }
+
+                        .badge-success {
+                        background: #e8f5e8;
+                        color: #2e7d32;
+                        border: 1px solid #c8e6c9;
+                        }
+
+                        .badge-warning {
+                        background: #fff3e0;
+                        color: #ef6c00;
+                        border: 1px solid #ffcc02;
+                        }
+
+                        @media (max-width: 768px) {
+                        .student-profile {
+                        padding: 15px;
+                        }
+
+                        .profile-header {
+                        padding: 20px;
+                        }
+
+                        .header-content {
+                        flex-direction: column;
+                        text-align: center;
+                        gap: 20px;
+                        }
+
+                        .profile-info h1 {
+                        font-size: 1.5rem;
+                        }
+
+                        .student-meta {
+                        justify-content: center;
+                        }
+
+                        .info-grid {
+                        grid-template-columns: 1fr;
+                        }
+
+                        .info-card {
+                        padding: 20px;
+                        }
+
+                        .info-item {
+                        flex-direction: column;
+                        gap: 4px;
+                        }
+
+                        .info-value {
+                        text-align: left;
+                        }
+
+                        .stats-container {
+                        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                        }
+                        }
+                    </style>
+
+                    <div class="student-profile">
+                        <div class="profile-container">
+                            <!-- Profile Header -->
+                            <div class="profile-header">
+                                <div class="header-content">
+                                    <div class="profile-avatar">
+                                        <t t-if="student.name">
+                                            <t t-esc="student.name[0:1].upper()" />
+                                        </t>
+                                        <t t-else="">S</t>
+                                    </div>
+                                    <div class="profile-info">
+                                        <h1>
+                                            <t t-if="student.name">
+                                                <t t-esc="student.name" />
+                                            </t>
+                                            <t t-else="">Student Name</t>
+                                        </h1>
+                                        <div class="student-meta">
+                                            <div class="meta-item">
+                                                <i class="fa fa-id-card"></i>
+                                                <t t-if="student.student_number">
+                                                    <t t-esc="student.student_number" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fa fa-graduation-cap"></i> Year <t
+                                                    t-if="student.year">
+                                                    <t t-esc="student.year" />
+                                                </t><t
+                                                    t-else="">N/A</t>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fa fa-calendar"></i> Batch <t
+                                                    t-if="student.batch_id">
+                                                    <t t-esc="student.batch_id.name" />
+                                                </t><t
+                                                    t-else="">N/A</t>
+                                            </div>
+                                        </div>
+                                        <div class="student-meta">
+                                            <span class="badge badge-primary">
+                                                <t t-if="student.course_id">
+                                                    <t t-esc="student.course_id.name" />
+                                                </t>
+                                                <t t-else="">No Programme</t>
+                                            </span>
+                                            <span class="badge badge-success">
+                                                <t t-if="student.hostel_type">
+                                                    <t
+                                                        t-esc="student.hostel_type.replace('_', ' ').title()" />
+                                                </t>
+                                                <t t-else="">Not Specified</t>
+                                            </span>
+                                            <t t-if="student.scholarship_id">
+                                                <span class="badge badge-warning">
+                                                    <t t-if="student.scholarship_category">
+                                                        <t
+                                                            t-esc="student.scholarship_category.title()" />
+                                                    </t>
+                                                    <t t-else="">Scholarship</t>
+                                                </span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stats Overview -->
+                            <div class="stats-container">
+                                <div class="stat-card">
+                                    <div class="stat-number">
+                                        <t t-if="student.leadership_count">
+                                            <t t-esc="student.leadership_count" />
+                                        </t>
+                                        <t t-else="">0</t>
+                                    </div>
+                                    <div class="stat-label">Leadership Roles</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">
+                                        <t t-if="student.achievement_count">
+                                            <t t-esc="student.achievement_count" />
+                                        </t>
+                                        <t t-else="">0</t>
+                                    </div>
+                                    <div class="stat-label">Achievements</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">
+                                        <t t-if="student.discipline_count">
+                                            <t t-esc="student.discipline_count" />
+                                        </t>
+                                        <t t-else="">0</t>
+                                    </div>
+                                    <div class="stat-label">Discipline Records</div>
+                                </div>
+                            </div>
+
+                            <!-- Information Grid -->
+                            <div class="info-grid">
+                                <!-- Personal Information -->
+                                <div class="info-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-user"></i>
+                                        <h3>Personal Information</h3>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">First Name:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.first_name">
+                                                <t t-esc="student.first_name" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Middle Name:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.middle_name">
+                                                <t t-esc="student.middle_name" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Last Name:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.last_name">
+                                                <t t-esc="student.last_name" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Mobile Number:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.private_mobile_number">
+                                                <t t-esc="student.private_mobile_number" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Private Email:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.private_email">
+                                                <t t-esc="student.private_email" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">College Email:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.college_email">
+                                                <t t-esc="student.college_email" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Current Address -->
+                                <div class="info-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-map-marker"></i>
+                                        <h3>Current Address</h3>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Dzongkhag:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.current_address_dzongkhag">
+                                                <t t-esc="student.current_address_dzongkhag" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Gewog:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.current_address_gewog">
+                                                <t t-esc="student.current_address_gewog" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Permanent Address -->
+                                <div class="info-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-home"></i>
+                                        <h3>Permanent Address</h3>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">House Number:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.house_number">
+                                                <t t-esc="student.house_number" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Thram Number:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.thram_number">
+                                                <t t-esc="student.thram_number" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Village:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.village">
+                                                <t t-esc="student.village" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Gewog:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.gewog">
+                                                <t t-esc="student.gewog" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Dzongkhag:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.dzongkhag">
+                                                <t t-esc="student.dzongkhag" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Guardian Information -->
+                                <div class="info-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-users"></i>
+                                        <h3>Guardian Information</h3>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Guardian Name:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.guardian">
+                                                <t t-esc="student.guardian" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Contact Number:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.guardian_contact">
+                                                <t t-esc="student.guardian_contact" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Organization:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.guardian_organization">
+                                                <t t-esc="student.guardian_organization" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Relation:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.relation_with_guardian">
+                                                <t t-esc="student.relation_with_guardian.title()" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Academic Information -->
+                                <div class="info-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-graduation-cap"></i>
+                                        <h3>Academic Information</h3>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Programme:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.course_id">
+                                                <t t-esc="student.course_id.name" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Batch:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.batch_id">
+                                                <t t-esc="student.batch_id.name" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Year:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.year">
+                                                <t t-esc="student.year" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Admission Date:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.admission_date">
+                                                <t t-esc="student.admission_date"
+                                                    t-options="{'widget': 'date'}" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Hostel Type:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.hostel_type">
+                                                <t
+                                                    t-esc="student.hostel_type.replace('_', ' ').title()" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Scholarship:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.scholarship_id">
+                                                <t t-esc="student.scholarship_id.name" />
+                                            </t>
+                                            <t t-else="">None</t>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Previous Education -->
+                                <div class="info-card">
+                                    <div class="card-header">
+                                        <i class="fa fa-school"></i>
+                                        <h3>Previous Education</h3>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Last School:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.name_of_last_school">
+                                                <t t-esc="student.name_of_last_school" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Index Number:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.index_no">
+                                                <t t-esc="student.index_no" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Class 12 %:</span>
+                                        <span class="info-value">
+                                            <t t-if="student.class_xii_percentage">
+                                                <t t-esc="student.class_xii_percentage" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

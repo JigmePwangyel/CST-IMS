@@ -24,6 +24,8 @@
         "views/student_discipline.xml",
         "views/student_achievement.xml",
         "views/batch_inherit.xml",
+        "views/templates/portal.xml",
+        "views/templates/student_profile_portal.xml",
         # MENUS
         "views/menu.xml",
     ],
